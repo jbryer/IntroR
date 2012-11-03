@@ -1,0 +1,132 @@
+\documentclass[letterpaper,doc]{apa6}
+
+\usepackage{apacite}
+\bibliographystyle{apacite}
+
+\setkeys{Gin}{width=1\textwidth}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Exploring the Relationship Between SAT Scores and First Year Retention}
+\author{Jason Bryer}
+\affiliation{Excelsior College}
+\shorttitle{SAT and Retention}
+%Optional components that can be added
+%\journal{}
+%\volume{}
+%\ccoppy{Copyright notice}
+%\copnum{Serial number or other reference}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\abstract{First year retention is an important measure for many institutions in determining whether first year college students return for a second year of college study. Many institutions rely on SAT scores as one indicator for determing college acceptance. This paper will utilize institional data from the Integrated Postsecondary Data System (IPEDS) to explore the relationship between SAT scores and first year retention rates.}
+
+<<setup,echo=false,result=hide>>=
+require(ipeds)
+require(xtable)
+require(ggplot2)
+
+directory = read.csv('../Data/IPEDS/hd2009.csv')
+admissions = read.csv("../Data/IPEDS/ic2009.csv")
+retention = read.csv("../Data/IPEDS/ef2009d.csv")
+names(directory) = tolower(names(directory))
+names(admissions) = tolower(names(admissions))
+names(retention) = tolower(names(retention))
+
+directory = directory[,c('unitid', 'instnm', 'sector', 'control')]
+admissions = admissions[,c('unitid', 'admcon1', 'admcon2', 'admcon7', 'applcnm', 
+						   'applcnw', 'applcn', 'admssnm', 'admssnw', 'admssn', 
+						   'enrlftm', 'enrlftw', 'enrlptm', 'enrlptw', 'enrlt', 
+						   'satnum', 'satpct', 'actnum', 'actpct', 'satvr25', 
+						   'satvr75', 'satmt25', 'satmt75', 'satwr25', 'satwr75', 
+						   'actcm25', 'actcm75', 'acten25', 'acten75', 'actmt25', 
+						   'actmt75', 'actwr25', 'actwr75')]
+retention = retention[,c('unitid', 'ret_pcf', 'ret_pcp')]
+
+#Recode admissions condition to a factor from an integer
+admissionsLabels = c("Required", "Recommended", "Neither requiered nor recommended", 
+					 "Do not know", "Not reported", "Not applicable")
+admissions$admcon1 = factor(admissions$admcon1, levels=c(1,2,3,4,-1,-2), 
+				labels=admissionsLabels)
+admissions$admcon2 = factor(admissions$admcon2, levels=c(1,2,3,4,-1,-2), 
+				labels=admissionsLabels)
+admissions$admcon7 = factor(admissions$admcon7, levels=c(1,2,3,4,-1,-2), 
+				labels=admissionsLabels)
+
+#Rename the columns
+names(admissions) = c("unitid", "UseHSGPA", "UseHSRank", "UseAdmissionTestScores", 
+					  "ApplicantsMen", "ApplicantsWomen", "ApplicantsTotal", 
+					  "AdmissionsMen", "AdmissionsWomen", "AdmissionsTotal", 
+					  "EnrolledFullTimeMen", "EnrolledFullTimeWomen", 
+					  "EnrolledPartTimeMen", "EnrolledPartTimeWomen", 
+					  "EnrolledTotal", "NumSATScores", "PercentSATScores", 
+					  "NumACTScores", "PercentACTScores", "SATReading25", 
+					  "SATReading75", "SATMath25", "SATMath75", "SATWriting25", 
+					  "SATWriting75", "ACTComposite25", "ACTComposite75", 
+					  "ACTEnglish25", "ACTEnglish75", "ACTMath25", "ACTMath75", 
+					  "ACTWriting25", "ACTWriting75")
+names(retention) = c("unitid", "FullTimeRetentionRate", "PartTimeRetentionRate")
+
+#Merge the data frames. Note that schools that do not appear in all three data 
+#frames will not be included in the final analysis.
+ret = merge(directory, admissions, by="unitid")
+ret = merge(ret, retention, by="unitid")
+#Use schools that require or recommend admission tests
+ret2 = ret[ret$UseAdmissionTestScores %in% 
+	c('Required', 'Recommended', 'Neither requiered nor recommended'),] 
+#Remove schools with low retention rates. Are these errors in the data?
+ret2 = ret2[-which(ret2$FullTimeRetentionRate < 20),] 
+
+#IPEDS only provides the 25th and 75th percentile in SAT and ACT scores. We will use
+#the mean of these two values as a proxy for the mean
+ret2$SATMath75 = as.numeric(ret2$SATMath75)
+ret2$SATMath25 = as.numeric(ret2$SATMath25)
+ret2$SATMath = (ret2$SATMath75 + ret2$SATMath25) / 2
+ret2$SATWriting75 = as.numeric(ret2$SATWriting75)
+ret2$SATWriting25 = as.numeric(ret2$SATWriting25)
+ret2$SATWriting = (ret2$SATWriting75 + ret2$SATWriting25) / 2
+ret2$SATTotal = ret2$SATMath + ret2$SATWriting
+
+ret2$AcceptanceTotal = as.numeric(ret2$AdmissionsTotal) / as.numeric(ret2$ApplicantsTotal)
+ret2$UseAdmissionTestScores = as.factor(as.character(ret2$UseAdmissionTestScores))
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle                            
+
+The Integrated Postsecondary Education Data System (IPEDS) \citeA{ipeds} defines retention as:
+\begin{quote}
+A measure of the rate at which students persist in their educational program at an institution, expressed as a percentage. For four-year institutions , this is the percentage of first-time bachelors (or equivalent) degree-seeking undergraduates from the previous fall who are again enrolled in the current fall. For all other institutions this is the percentage of first-time degree/certificate-seeking students from the previous fall who either re-enrolled or successfully completed their program by the current fall.
+\end{quote}
+
+\section{Results}
+
+<<echo=false,results=tex>>=
+ret2$NumSATScores = as.numeric(ret2$NumSATScores)
+fit = lm(FullTimeRetentionRate ~ SATWriting + SATMath + AcceptanceTotal + UseAdmissionTestScores, data=ret2, weights=NumSATScores)
+x = xtable(fit, caption="Regression Results", label="regressionTable")
+print(x)
+@
+
+\begin{figure}
+\centering
+<<echo=false,fig=true,height=5,width=7.5>>=
+p = ggplot(ret2, aes(x=SATTotal, y=FullTimeRetentionRate, size=NumSATScores, color=UseAdmissionTestScores)) + geom_point() + xlab("SAT Total Score") + ylab("Full Time Retention Rate")
+print(p)
+@
+\caption{Relationship Between SAT Scores and Student Retention}
+\label{fig:sat}
+\end{figure}
+
+<<echo=false,results=tex>>=
+#LaTeX table from the xtable package
+@
+
+
+
+%\clearpage
+
+\bibliography{bibliography}
+
+\end{document}
+

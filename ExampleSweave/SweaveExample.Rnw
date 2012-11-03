@@ -1,0 +1,33 @@
+\documentclass[a4paper]{article}
+
+\usepackage{fullpage}
+
+<<results=hide,echo=FALSE>>=
+library(gdata)
+library(xtable)
+@
+
+\title{Sweave Example}
+\author{Jason Bryer}
+
+\begin{document}
+
+\maketitle
+
+In this example will will look at the frequency of military status by division.
+
+<<results=hide>>=
+students = read.xls("Students.xls", sheet=1)
+@
+
+<<echo=FALSE,results=tex>>=
+xtable(table(students$Military, students$Division))
+@
+
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+barplot(table(students$Military, students$Division), main='Distribution by Military & Division', xlab='Division', ylab='Enrollment Counts')
+@
+\end{center}
+
+\end{document}
