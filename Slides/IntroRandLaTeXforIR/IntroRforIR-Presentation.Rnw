@@ -1,0 +1,841 @@
+%\documentclass[handout]{beamer}
+%\documentclass[handout,10pt,slidestop,mathserif]{beamer}
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{2 on 1}
+\documentclass[10pt,slidestop,mathserif,c]{beamer}
+\usetheme{Madrid}
+%\usepackage[bars]{beamerthemetree}
+\usecolortheme{seahorse}
+
+\usepackage{tabularx}
+\usepackage{verbatim}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{Sweave}
+\usepackage{moreverb}
+\usepackage{pgf}
+\usepackage{tikz}
+
+%\SweaveOpts{prefix.string=figures/figure}
+
+\newcommand{\putat}[3]{\begin{picture}(0,0)(0,0)\put(#1,#2){#3}\end{picture}}
+  
+\newenvironment{changemargin}[2]{%
+  \begin{list}{}{%
+    \setlength{\topsep}{0pt}%
+    \setlength{\leftmargin}{#1}%
+    \setlength{\rightmargin}{#2}%
+    \setlength{\listparindent}{\parindent}%
+    \setlength{\itemindent}{\parindent}%
+    \setlength{\parsep}{\parskip}%
+  }%
+  \item[]}{\end{list}}
+
+%% Define a new 'leo' style for the package that will use a smaller font.
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\tiny\ttfamily}}}
+\makeatother
+
+\title[Intro to R and \LaTeX{} for IR]{Introduction to R and \LaTeX{} for\\Institutional Research}
+\subtitle{}
+\author[Jason Bryer]{Jason M. Bryer}
+\institute[www.bryer.org]{Excelsior College\\\url{www.bryer.org}\\jason@bryer.org}
+\date[Nov 3-4, 2012]{November 3 \& 4, 2012\\NEAIR 39th Annual Conference\\Pre-Conference Workshop}
+
+\begin{document}
+
+<<echo=FALSE>>=
+options(width=50)
+options(digits=2)
+options(continue="   ")
+options(warn=-1)
+@
+
+\frame{\titlepage}
+\frame{\frametitle{Agenda}\tableofcontents[hideallsubsections]}
+
+
+%%%%%%%%%% Overview %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Overview}
+\subsection{What is R?}
+\begin{frame}
+	\frametitle{What is R?}
+	\begin{quote}R is a language and environment for statistical computing and graphics. It is a GNU project which is similar to the S language and environment which was developed at Bell Laboratories (formerly AT\&T, now Lucent Technologies) by John Chambers and colleagues...
+	\end{quote}
+	\pause
+	\begin{quote}
+	R provides a wide variety of statistical (linear and non linear modeling, classical statistical tests, time-series analysis, classifcation, clustering, ...) and graphical techniques, and is highly extensible. The S language is often the vehicle of choice for research in statistical methodology, and R provides an Open Source route to participation in that activity.
+	(R-project.org)
+	\end{quote}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Pros}
+	\begin{itemize}
+	\item<+-| alert@+> FREE!
+	\textit{	R is available as Free Software under the terms of the Free Software Foundation's GNU General Public License in source code form. It compiles and runs on a wide variety of UNIX platforms and similar systems (including FreeBSD and Linux), Windows and MacOS.}
+	\item<+-| alert@+> Available for multiple platforms (i.e. Windows, Mac, Linux).
+	\item<+-| alert@+> Easily extensible with (currently) over 2,000 packages listed on CRAN.
+	\item<+-| alert@+> Scriptable.
+	\item<+-| alert@+> Publication grade graphics.
+	\item<+-| alert@+> Multiple ways of doing the same thing.
+	\item<+-| alert@+> Quickly becoming the de facto standard among statistician.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Cons}
+	\begin{itemize}
+		\item<+-| alert@+> Has a steeper learning curve.
+		\item<+-| alert@+> Multiple ways of doing the same thing.
+		\item<+-| alert@+> Can have difficulty with \textit{very} large datasets.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+	\frametitle{R's Roots... S}
+	\begin{itemize}
+	\item S is a language that was developed by John Chambers and others at Bell Labs.	\item S was initiated in 1976 as an internal statistical analysis environment - originally implemented as Fortran libraries.	\item Early versions of the language did not contain functions for statistical modeling.	\item In 1988 the system was rewritten in C and began to resemble the system that we have today (this was Version 3 of the language). The book Statistical Models in S by Chambers and Hastie (the blue book) documents the statistical analysis functionality.	\item Version 4 of the S language was released in 1998 and is the version we use today. The book Programming with Data by John Chambers (the green book) documents this version of the language.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+	\frametitle{History of S}
+	\begin{itemize}
+	\item In 1993 Bell Labs gave StatSci (now Insightful Corp.) an exclusive license to develop and sell the S language.	\item In 2004 Insightful purchased the S language from Lucent for \$2 million and is the current owner.	\item In 2006, Alcatel purchased Lucent Technologies and is now called Alcatel-Lucent.	\item Insightful sells its implementation of the S language under the product name S-PLUS and has built a number of fancy features (GUIs, mostly) on top of it-hence the "PLUS".	\item In 2008 Insightful is acquired by TIBCO for \$25 million; future of S-PLUS is uncertain.	\item The S language itself has not changed dramatically since 1998.	\item In 1998, S won the Association for Computing Machinery's Software System Award.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+In "Stages in the Evolution of S", John Chambers writes:
+\begin{quote}"[W]e wanted users to be able to begin in an interactive environment, where they did not consciously think of themselves as programming. Then as their needs became clearer and their sophistication increased, they should be able to slide gradually into programming, when the language and system aspects would become more important."
+\end{quote}http://www.stat.bell-labs.com/S/history.html
+\end{frame}
+
+\begin{frame}[c]
+	\frametitle{History of R}
+	\begin{itemize}
+	\item 1991: Created in New Zealand by Ross Ihaka and Robert Gentleman. Their experience developing R is documented in a 1996 JCGS paper.	\item 1993: First announcement of R to the public.	\item 1995: Martin M?achler convinces Ross and Robert to use the GNU General Public License to make R free software.	\item 1996: A public mailing list is created (R-help and R-devel)	\item 1997: The R Core Group is formed (containing some people associated with S-PLUS). The core group controls the source code for R.	\item 2000: R version 1.0.0 is released.	\item 2012: R version 2.15.2 is released on October 31, 2012.
+	\item There are now over 4,000 packages listed on CRAN. 
+	\end{itemize}
+\end{frame}
+
+\subsection{What is \LaTeX{}}
+\begin{frame}[fragile]
+	\frametitle{What is \LaTeX{}}
+	\LaTeX{}...
+	\begin{itemize}
+		\item<+-| alert@+> is a document preparation system for high-quality typesetting.
+		\item<+-| alert@+> is \textit{not} a word processor.
+		\item<+-| alert@+> began in 1985 by Leslie Lampart.
+		\item<+-| alert@+> is now maintained by the LaTeX3 Project.
+		\item<+-| alert@+> is FREE!
+		\item[]<+- | alert@+> The fundamental idea around \LaTeX{} is to focus on the content, \textit{not} the formatting.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Why use \LaTeX{}}
+	\begin{center}
+		\includegraphics{figures/miktex.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Why use \LaTeX{}}
+	\begin{center}
+		\includegraphics{figures/DataAnalysisCartoon1.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{\LaTeX{} Features}
+	\begin{itemize}
+	  \item Typesetting journal articles, technical reports, books, and slide presentations.
+    \item Control over large documents containing sectioning, cross-references, tables and figures.
+    \item Typesetting of complex mathematical formulas.
+    \item Advanced typesetting of mathematics with AMS-LaTeX.
+    \item Automatic generation of bibliographies and indexes.
+    \item Multi-lingual typesetting.
+    \item Inclusion of artwork, and process or spot colour.
+    \item Using PostScript or Metafont fonts.
+	\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%% Installation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Installation}
+\frame{\tableofcontents[currentsection,hideothersubsections]}
+
+\subsection{Installing R}
+\begin{frame}[fragile,containsverbatim]
+	\frametitle{Installing R}
+	The latest version of R can be obtained from \url{http://cran.r-project.org}. The current version of R is:
+<<>>=
+R.version$version.string
+@
+	\pause
+	\ \\
+	For Windows the following should also be installed:
+	\begin{itemize}
+		\item RTools \url{http://www.murdoch-sutherland.com/Rtools/}
+	\end{itemize}
+	\ \\ \ \\
+	For Mac the following should also be installed which are available from \url{http://cran.r-project.org/bin/macosx/tools}
+	\begin{itemize}
+		\item gfortran-4.2.3
+		\item tcl/tk 8.5.5
+	\end{itemize}
+\end{frame}
+
+\subsection{Installing \LaTeX{}}
+\begin{frame}[fragile]
+	\frametitle{Installing \LaTeX{}}
+	For Windows:
+	\begin{itemize}
+		\item MiKTeX \url{http://miktex.org/}
+	\end{itemize}
+	For Mac: 
+	\begin{itemize}
+		\item MacTeX \url{http://www.tug.org/mactex/2011/}
+	\end{itemize}
+\end{frame}
+
+\subsection{Editors}
+\begin{frame}[fragile]
+	\frametitle{Editors for R}
+	There are many editors for R including the built in command line interface. However, we will make use of a relatively new Integrated Development Environment (IDE) designed specifically for R, namely RStudio (\url{http://rstudio.org}). It is available for Mac OS X, Windows, Linux, and as a Linux based server (which then runs in a web browser).
+	\begin{center}	\includegraphics[height=.5\paperheight]{figures/rstudio-windows.png} \end{center}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Editors for \LaTeX{}}
+	Though RStudio supports \LaTeX{} and Sweave documents, we will utilize:
+	\begin{itemize}
+		\item TeXnicCenter \url{http://www.texniccenter.org/} for Windows and 
+		\item TeXShop \url{http://www.uoregon.edu/~koch/texshop/} for Mac OS X (Note that this is installed with MacTeX).
+	\end{itemize}
+	\ \\ \ \\
+	There are at least two PDF viewers for windows. I recommend using Sumatra (\url{http://blog.kowalczyk.info/software/sumatrapdf/download-free-pdf-viewer.html}) since you can build \LaTeX{} documents without first exiting the application.
+\end{frame}
+
+\subsection{Configuring \LaTeX{} with Sweave}
+
+\begin{frame}
+	\frametitle{Configuring TeXnicCenter with Sweave (Windows)}
+	\begin{columns}[c]
+	\column{.5\paperwidth}
+	\begin{itemize}[<+-| alert@+>]
+		\item Click the \texttt{Build} menu, then \texttt{Define output profile}.
+		\item Click \texttt{Add} to create a new profile. Name the new profile \texttt{Sweave}.
+		\item In the ``(La)TeX" tab, click the ``Run (La)TeX in this profile"
+		\item Click the \texttt{...} button for the ``Path to the (La)Tex compiler" option and locate \texttt{R.exe}. This will typically be \texttt{C:/Program Files/R/R-2.14.0/bin/R.exe} where the version number corresponds to the version of R installed.
+		\item For the ``Command line arguments to pass to the compiler," enter: \texttt{CMD Sweave --pdf \%nm}
+	\end{itemize}
+	\column{.5\paperwidth}
+		\includegraphics[width=.5\paperwidth]{figures/TeXnicCenterSweaveSetup1.png}
+	\end{columns}
+\end{frame}
+%http://www.agmonim.com/2010/12/texniccenter-and-adobe-reader-10-x/
+
+
+\begin{frame}[containsverbatim]
+	\frametitle{Sweave with TeXShop (Mac)}
+	In order to build Sweave files in TeXShop, you will need to create a custom "engine." First, create \texttt{Sweave.engine} in the \texttt{\textasciitilde/Library/TeXShop/Engines/} directory with the following contents:
+	\begin{center}
+ \begin{boxedverbatim}
+#!/bin/bash
+
+export PATH=$PATH:/usr/textbin:/usr/local/bin
+R CMD Sweave "$1"
+pdflatex "${1%.*}"
+	\end{boxedverbatim}
+	\end{center}
+	This file must have executable permissions. Open the Terminal applications (located in the Applications/Utilities folder) and execute the following command:
+	\begin{center}
+	\begin{boxedverbatim}
+chmod 744 ~/Library/TeXShop/Engines/Sweave.engine
+	\end{boxedverbatim}
+	\end{center}
+	Restart TeXShop and you will be able to select Sweave from the list of typesets. 
+
+\end{frame}
+
+
+
+%%%%%%%%%% R %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{R: Software for data analysis}
+\frame{\tableofcontents[currentsection,hideothersubsections]}
+
+\subsection{The R Environment}
+\begin{frame}
+	\frametitle{The R Environment}
+	\begin{center}
+	\begin{figure}
+		\includegraphics[width=3.0in]{figures/rgui.png}
+	\end{figure}\end{center}
+\end{frame}
+
+\subsection{R as a Big Calculator}
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{R as a Big Calculator}
+	\setbeamercovered{invisible}
+<<>>=
+2 + 2
+@
+\pause
+<<>>=
+1 + sin(9)
+@
+\pause
+<<>>=
+23.76 * log(8)/(23+atan(9))
+@
+\end{frame}
+
+\subsection{Packages}
+\begin{frame}[containsverbatim]
+	\frametitle{Installing Packages}
+	Both Windows and Mac have a menu system for installing packages, however the \texttt{install.packages} function allows for the installation to be scriptable.
+<<installpackages,eval=FALSE,keep.source=TRUE>>=
+install.packages(c("psych", "gdata", "foreign", "devtools", "roxygen"), dependencies = TRUE)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Loading Packages}
+	\setbeamercovered{invisible}
+	The \texttt{library} command will load a package into the current R session.
+<<loadpackages,results=hide>>=
+library(psych)
+library(gdata)
+library(foreign)
+@
+	\pause
+	For a list of packages that have been downloaded, but not necessarily attached, the \texttt{library()} function without any parameters will return that list.
+<<eval=FALSE>>=
+library()
+@
+\end{frame}
+
+\begin{frame}
+	\frametitle {Useful Packages}
+	\small
+	\begin{tabularx}{\textwidth}{ l X }
+	\hline\noalign{\smallskip}
+	Package & Description  \\
+	\noalign{\smallskip}\hline\noalign{\smallskip}
+	psych & Package contains lots of useful functions for descriptive statistics.\\
+	foreign & Contains functions to read SPSS files.\\
+	gdata & Contains functions to read Excel spreadsheets.\\
+	RODBC & Package contains functions to read and write data from ODBC databases (e.g. Oracle, MS SQLServer).\\
+	RMySQL & Package for interfacing with MySQL databases.\\
+	RSQLite & Package for the creation and editing of SQLite databases embedded within R.\\
+	MASS & Package to accompany Venables and Ripley's \textit{Modern Applied Statistics with S}. See \url{http://www.stats.ox.ac.uk/pub/MASS4/}.\\
+	ggplot2 & Fantastic package for creating really nice looking graphics \url{http://had.co.nz/ggplot2}. \\
+	rcmdr & R Commander is a graphical frontend for R. \\
+	\noalign{\smallskip}\hline
+	\end{tabularx}
+	\normalsize
+\end{frame}
+
+\begin{frame}[containsverbatim,fragile,shrink=11]
+	\frametitle{Available Packages}
+	\setbeamercovered{invisible}
+	The \texttt{search()} function will return all packages that are currently attached to the system.
+<<echo=FALSE>>=
+options(width=70)
+@
+<<>>=
+search()
+@
+	\pause
+	You can then use the \texttt{ls()} function to return a list of functions in a particular package.
+<<>>=
+ls('package:foreign')
+@
+\end{frame}
+
+
+\subsection{Getting Help}
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Getting Help}
+	\begin{itemize}
+	\item<+-| alert@+>{ R provides extensive documentation and help. The \texttt{help.start()} function will launch a webpage with links to:
+	\begin{itemize}
+		\item The R manuals
+		\item The R FAQ
+		\item Search engine
+		\item and many other useful sites
+	\end{itemize} }
+	\item<+-| alert@+>{ The \texttt{help.search()} function will search the help file for a particular word or phrase. For example:
+<<eval=FALSE>>=
+help.search('cross tabs')
+@
+}
+	\item<+-| alert@+>{ To get documentation on a specific function, the \texttt{help()} function, or simply \texttt{?functionName} will open the documentation page in the web browser.}
+	\item<+-| alert@+>{ Lastly, to search the R mailing lists, use the \texttt{RSiteSearch()} function.}
+	\end{itemize}
+\end{frame}
+
+
+\subsection{Loading Data}
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Reading Excel Files}
+	\setbeamercovered{invisible}
+<<echo=FALSE>>=
+options(width=50)
+@
+<<results=hide>>=
+students = read.xls("ECStudents.xls", sheet=1)
+@
+\pause
+<<>>=
+names(students)
+@
+\pause
+<<>>=
+nrow(students)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Reading SPSS Files}
+	The \texttt{foreign} package provides a function to read SPSS files.
+<<>>=
+shy = read.spss("Exercise2.sav", use.value.labels=FALSE, to.data.frame=TRUE)
+names(shy)
+@
+This data file contains six columns: social anxiety (soax), restricted emotionality (reemo), restricted affectionate behavior (reaff), intimate self-disclosure (isd), a single degree-of-freedom continuous measure of shyness (shy), and a three-group experimental structural variable (group).
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Reading CSV Files}
+	R can read virtually any type of plain text file with the \texttt{read.table} function. For convenience, the \texttt{read.csv} will provide a quick way of reading comma-separated values (CSV) files. For example:
+<<eval=FALSE>>=
+students = read.csv(file.choose(), header=TRUE)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Reading SQL Databases}
+<<eval=FALSE>>=
+channel = odbcDriverConnect(connection="dburl:1521/live", readOnly=TRUE)
+students = sqlQuery(channel, "SELECT * FROM students")
+odbcClose(channel)
+@
+\end{frame}
+
+\subsection{Data Formats}
+\begin{frame}[containsverbatim]
+	\frametitle{Data Frames}
+<<head>>=
+head(students, n=5)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim,shrink=10]
+	\frametitle{Data Frame Structure}
+<<>>=
+str(students)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{NA vs. NULL}
+	\setbeamercovered{invisible}
+	R is just as much a programming language as it is a statistical software package. As such it represents null differently for programming (using NULL) than for data (using NA).
+	\pause
+	\begin{quote}NULL represents the null object in R: it is a reserved word. NULL is often returned by expressions and functions whose values are undefined.	\end{quote}	
+	\pause
+	\begin{quote}NA is a logical constant of length 1 which contains a missing value indicator. NA can be freely coerced to any other vector type except raw. There are also constants NA\textunderscore integer\textunderscore, NA\textunderscore real\textunderscore, NA\textunderscore complex\textunderscore and NA\textunderscore character\textunderscore of the other atomic vector types which support missing values: all of these are reserved words in the R language.\end{quote}
+	For more details, see~\url{http://opendatagroup.com/2010/04/25/r-na-v-null/}
+\end{frame}
+
+
+\subsection{Descriptive Statistics}
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Frequency Tables}
+One-way frequency table
+<<>>=
+table(students$Division)
+@
+\pause
+Two-way frequency table (the first parameter will be the rows, second the columns)
+<<>>=
+mytable = table(students$Military, students$Division)
+mytable
+@
+\end{frame}
+
+\begin{frame}[containsverbatim,fragile,shrink=10]
+	\frametitle{Tables of Proportions}
+Cell Percentages:
+<<>>=
+prop.table(mytable)
+@
+\pause
+Row Percentages:
+<<>>=
+prop.table(mytable, 1)
+@
+\pause
+Column Percentages:
+<<>>=
+prop.table(mytable, 2)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Descriptive Statistics}
+Mean and standard deviation:
+<<>>=
+mean(students$Credits, na.rm=TRUE)
+sd(students$Credits, na.rm=TRUE)
+@
+\pause
+However, the mean, median, 25th and 75th quartiles, min, and max can be returned in a single statement using the \texttt{summary} function:
+<<>>=
+summary(students$Credits)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Descriptive Statistics}
+The \texttt{psych} package contains the \texttt{describe} and \texttt{describe.by} functions which provide a convenient way of calculating summary statistics.
+<<>>=
+describe(students$Credits)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim,fragile, shrink=11]
+	\frametitle{Descriptive Statistics (cont.)}
+The \texttt{describe.by} will calculate summary statistics by grouping variables. The \texttt{mat} parameter will return the results in matrix form.
+<<>>=
+describe.by(students$Credits, students$Division, na.rm=TRUE, mat=TRUE)
+@
+\end{frame}
+
+
+\subsection{Graphics}
+\begin{frame}[containsverbatim]
+	\frametitle{Histograms}
+<<label=hist1,echo=TRUE,include=FALSE,keep.source=TRUE>>=
+barplot(table(students$Division), 
+main='Distribution by Division', 
+xlab='Division', ylab='Enrollment Counts')
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Histograms (cont.)}
+\begin{figure}
+<<fighist1,fig=TRUE,echo=FALSE,eps=TRUE,results=hide,height=4.5>>=
+<<hist1>>
+@
+\end{figure}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Histograms (cont.)}
+<<label=hist2,echo=TRUE,include=FALSE,keep.source=TRUE>>=
+counts = table(students$Military, students$Division) 
+barplot(counts, 
+main='Enrollment Distribution by Military and Division', 
+xlab='Division', ylab='Enrollment Counts', 
+legend=rownames(counts), col=c('darkblue', 'darkred'))
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Histograms (cont.)}
+\begin{figure}
+<<fighist2,fig=TRUE,echo=FALSE,eps=TRUE,results=hide,height=4.5>>=
+<<hist2>>
+@
+\end{figure}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Pie Charts}
+\begin{figure}
+<<pie1,echo=TRUE,include=FALSE,keep.source=TRUE>>=
+pie(table(students$Division))
+@
+<<figpie1,fig=TRUE,echo=FALSE,eps=TRUE,results=hide,height=4.5>>=
+<<pie1>>
+@
+\end{figure}
+\end{frame}
+
+\subsection{ggplot2: A Grammar of Graphics}
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{ggplot2: A Grammar of Graphics}
+	\begin{itemize}
+		\item ggplot2 is an R package that provides an alternative framework based upon Wilkinson's (2005) Grammar of Graphics.
+		\item ggplot2 is, in general, more flexible for creating "prettier" and complex plots.
+		\item Works by creating layers of different types of objects/geometries (i.e. bars, points, lines, polygons, etc.)
+		\item ggplot2 has at least three ways of creating plots:
+			\begin{enumerate}
+				\item \begin{verbatim} qplot \end{verbatim} 
+				\item \begin{verbatim} ggplot(...) + geom_XXX(...) + ... \end{verbatim}
+				\item \begin{verbatim} ggplot(...) + layer(...) \end{verbatim}
+			\end{enumerate}
+		We will focus only on the second.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{First Example}
+\begin{figure}
+<<ggplot-fig1,echo=TRUE,fig=TRUE,height=4.5>>=
+data(diamonds)
+p <- ggplot(diamonds, aes(x=carat,y=price,colour=cut)) + 
+	geom_point()
+print(p)
+@
+\end{figure}
+\end{frame}
+
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{First Example}
+\begin{figure}
+<<ggplot-fig2,echo=TRUE,fig=TRUE,height=4.5>>=
+p <- p + facet_wrap(~cut) + 
+	ggtitle("First example")
+print(p)
+@
+\end{figure}
+\end{frame}
+
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Parts of a ggplot2 statement}
+	\begin{itemize}
+		\item<+-| alert@+> Data \begin{verbatim} ggplot(myDataFrame, aes(x=x, y=y) \end{verbatim}
+		\item<+-| alert@+> Layers \begin{verbatim} geom_point(), geom_histogram() \end{verbatim}
+		\item<+-| alert@+> Facets \begin{verbatim} facet_wrap(~ cut), facet_grid(~ cut) \end{verbatim}
+		\item<+-| alert@+> Scales \begin{verbatim} scale_y_log10() \end{verbatim}
+		\item<+-| alert@+> Other options \begin{verbatim} ggtitle('my title'), ylim(c(0, 10000)), xlab('x-axis label') \end{verbatim}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Lots of geoms}
+	\begin{columns}[c]
+	\column{1.5in}
+\begin{verbatim} 
+geom_abline
+geom_jitter
+geom_area
+geom_line
+geom_bar	
+geom_linerange
+geom_bin2d
+geom_path 
+geom_blank
+geom_point 
+geom_boxplot
+geom_pointrange 
+geom_contour
+geom_polygon 
+geom_crossbar
+geom_quantile 
+\end{verbatim}
+\column{1.5in}
+\begin{verbatim}
+geom_density
+geom_rect 
+geom_density2d
+geom_ribbon
+geom_errorbar
+geom_rug
+geom_errorbarh
+geom_segment 
+geom_freqpoly
+geom_smooth 
+geom_hex
+geom_step
+geom_histogram
+geom_text 
+geom_hline
+geom_tile
+geom_vline
+\end{verbatim}
+\end{columns}
+\end{frame}
+
+%%%%%%%%%% LaTeX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\LaTeX{}: Document creation}
+\frame{\tableofcontents[currentsection,hideothersubsections]}
+
+
+\subsection{\LaTeX{} Example}
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Your First LaTeX File}
+	\begin{itemize}
+		\item[]<1-| alert@2> \begin{verbatim} \documentclass{article}	\end{verbatim}
+		\item[]<1-| alert@3> \begin{verbatim} \title{Introduction to R and \LaTeX{} for IR} \end{verbatim}
+		\item[]<1-| alert@4> \begin{verbatim} \author{Jason Bryer}	\end{verbatim}
+		\item[]<1-| alert@5> \begin{verbatim} \date{May 2010}	\end{verbatim}
+		\item[]<1-| alert@6> \begin{verbatim} \begin{document}	\end{verbatim}
+		\item[]<1-| alert@6> \begin{verbatim} \maketitle	\end{verbatim}
+		\item[]<1-| alert@6> \begin{verbatim} Hello Association for Institutional Research! \end{verbatim}
+		\item[]<1-| alert@6> \begin{verbatim} \end{document}	\end{verbatim}
+		\item<2-| alert@2> This document is an article.
+		\item<3-| alert@3> Its title is \textit{Introduction to R and \LaTeX{} for IR}.
+		\item<4-| alert@4> Its author is \textit{Jason Bryer}.
+		\item<5-| alert@5> It was written in \textit{May 2010}.
+		\item<6-| alert@6> The document consists of a \textit{title} followed by the text \textit{Hello Association for Institutional Research}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\LaTeX{} Help Sheet}
+	\includegraphics[width=\paperwidth, height=\paperheight]{latex-help-sheet-page1.pdf}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\LaTeX{} Help Sheet}
+	\includegraphics[width=\paperwidth, height=\paperheight]{latex-help-sheet-page2.pdf}
+\end{frame}
+
+
+%%%%%%%%%% Sweave %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sweave: Putting it together}
+\frame{\tableofcontents[currentsection,hideothersubsections]}
+
+\subsection{What is Sweave?}
+\begin{frame}[fragile,containsverbatim]
+	\frametitle{What is Sweave?}
+	Sweave...
+	\begin{itemize}
+		\item<+-| alert@+> is a function built into R.
+		\item<+-| alert@+> bridges R with \LaTeX{} by allowing for R code to be embedded directly into a \LaTeX{} file.
+		\item<+-| alert@+> is designed "to create dynamic reports, which can be updated automatically if data or analysis change" (Leisch, 2002).
+		\item<+-| alert@+> is documented here: \texttt{help("Sweave", package="utils")}
+		\item<+-| alert@+> allows R code to be embedded directly into \LaTeX{} files using the following format: \\ \ \\\verb@<<label,options>>=@ \\	\verb@2 + 2@ \\	\verb+@+ \ \\
+		\item<+-| alert@+> Page 13 of the \textit{Sweave User Manual} contains the complete list of options.
+	\end{itemize}
+\end{frame}
+
+\setbeamercovered{transparent}
+
+\subsection{Sweave Example}
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Sweave Example}
+	\begin{itemize}
+	\item[]<1-| alert@1> \verb@\documentclass[a4paper]{article}@
+	\item[]<2-| alert@2> \verb@<<results=hide,echo=FALSE>>=@
+	\item[]<2-| alert@2> \verb@library(gdata)@
+	\item[]<2-| alert@2> \verb@library(xtable)@
+	\item[]<2-| alert@2> \verb+@+
+	\item[]<3-| alert@3> \verb@\title{Sweave Example}@
+	\item[]<3-| alert@3> \verb@\author{Jason Bryer}@
+	\item[]<3-| alert@3> \verb@\begin{document}@
+	\item[]<3-| alert@3> \verb@\maketitle@
+	\item[]<3-| alert@3> \verb@In this example will will look at the frequency of@
+	\item[]<3-| alert@3> \verb@military status by division.@
+	\item[]<4-| alert@4> \verb@<<results=hide>>=@
+	\item[]<4-| alert@4> \verb@students = read.xls("ECStudents.xls", sheet=1)@
+	\item[]<4-| alert@4> \verb+@+
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[containsverbatim,fragile]
+	\frametitle{Sweave Example}
+	\begin{itemize}
+	\item[]<1-| alert@1> \verb@<<echo=FALSE,results=tex>>=@
+	\item[]<1-| alert@1> \verb@xtable(table(students$Military, students$Division))@
+	\item[]<1-| alert@1> \verb+@+
+	\item[]<2-| alert@2> \verb@\begin{center}@
+	\item[]<2-| alert@2> \verb@<<fig=TRUE,echo=FALSE>>=@
+	\item[]<2-| alert@2> \verb@barplot(table(students$Military, students$Division),@
+	\item[]<2-| alert@2> \verb@    main='Distribution by Military & Division',@
+	\item[]<2-| alert@2> \verb@    xlab='Division', ylab='Enrollment Counts')@
+	\item[]<2-| alert@2> \verb+@+
+	\item[]<2-| alert@2> \verb@\end{center}@
+	\item[]<3-| alert@3> \verb@\end{document}@
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Sweave Example}
+	\pgfputat{\pgfxy(2,-9)}{\pgfbox[left,base]{\pgfimage[height=1.2\textheight]{../ExampleSweave/SweaveExample.pdf}}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Sweave Workflow}
+	There are several steps required to go from a source file containing \LaTeX{} and R to a final document. Specifically...
+	\begin{itemize}
+		\item<+-| alert@+> Create a source file. This is a plain text file, usually with a .Rnw file extension.
+		\item<+-| alert@+> Run the \texttt{Sweave} function in R. This will create a .tex file.
+		\item<+-| alert@+> Run \texttt{latex} on the resulting .tex file. This will vary slightly based upon the platform but will result in a postscript and/or PDF file.
+	\end{itemize}
+	\begin{center}
+		\includegraphics{figures/SweaveWorkflow.png}
+	\end{center}
+\end{frame}
+
+%%%%%%%%%% Conclusion %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusions}
+\frame{\tableofcontents[currentsection,hideothersubsections]}
+
+\begin{frame}
+	\frametitle{Conclusions}
+	My goals today were to...
+	\begin{itemize}
+		\item[]<+-| alert@+> Introduce a new way of thinking about report generation.
+		\item[]<+-| alert@+> To \textit{not} provide a comprehensive overview of R and \LaTeX{}, but instead to...
+		\item[]<+-| alert@+> Introduce the vast communities of R and \LaTeX{}.
+		\item[]<+-| alert@+> Provide a cheaper, and perhaps more efficient, way of generating IR reports.
+		\item[]<+-| alert@+> Could you see yourself, or your institution, utilizing these frameworks?
+	\end{itemize}
+\end{frame}
+
+\urlstyle{leo} %This URL style will make the url smaller
+
+
+\begin{frame}
+	\frametitle{Further Reading}
+	\small
+	\begin{tabularx}{\textwidth}{X l}
+	\hline
+	Name & URL \\ \hline
+	R-Bloggers & \url{http://r-bloggers.com} \\
+	R in Action & \url{http://www.manning.com/kabacoff/} \\
+	R for SAS \& SPSS Users & \url{http://oit.utk.edu/scc/RforSAS&SPSSusers.pdf} \\
+	An Introduction to R & \url{http://cran.r-project.org/doc/manuals/R-intro.pdf} \\
+	simpleR: Using R for Introductory Statistics & \url{http://cran.r-project.org/doc/contrib/Verzani-SimpleR.pdf} \\
+	\textbf{Quick-R} & \url{http://statmethods.net} \\
+	Task Views & \url{http://cran.r-project.org/web/views} \\
+	R Seek: An R Search Engine & \url{http://www.rseek.org} \\
+	R Reference Card & \url{http://cran.r-project.org/doc/contrib/Short-refcard.pdf} \\
+	The Personality Project & \url{http://www.personality-project.org/r} \\
+	R Cheat Sheets & \url{http://devcheatsheet.com/tag/r} \\
+	ggplot2 & \url{http://had.co.nz/ggplot2} \\
+	\hline
+	More Math Into \LaTeX{} (First section is free) & \url{http://www.ctan.org/tex-archive/info/mil/mil.pdf} \\
+	Wikibooks & \url{http://en.wikibooks.org/wiki/LaTeX} \\
+	\LaTeX{} Help Sheet & \url{http://www.scribd.com/doc/191838/LaTeX-Help-Sheet} \\
+	Sweave User Manual & \\
+	Beamer \LaTeX{} style used to create this presentation. & \url{http://latex-beamer.sourceforge.net} \\
+	\hline
+	\end{tabularx}
+	\normalsize
+\end{frame}
+
+
+\begin{frame}[c]
+	\LARGE{Thank You}\\
+	\normalsize
+	Jason Bryer (jason@bryer.org)\\
+	\url{http://IntroRforIR.com}
+\end{frame}
+
+\end{document}
