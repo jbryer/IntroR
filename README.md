@@ -1,6 +1,6 @@
 ## Introduction to R
 
-* [Albany R Users Group](http://www.meetup.com/Albany-R-Users-Group/events/212637672/) Talk - [Slides](https://github.com/jbryer/IntroR/blob/master/Slides/Albany%20useR/IntroR.pdf?raw=true)
+* [Albany R Users Group](http://www.meetup.com/Albany-R-Users-Group/events/212637672/) Talk - [Slides](https://github.com/jbryer/IntroR/blob/master/Slides/Albany_useR/IntroR.pdf?raw=true)
 
 ## Introduction to R and LaTeX for Institutional Research
 
