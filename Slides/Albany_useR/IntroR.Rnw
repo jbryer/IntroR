@@ -37,11 +37,11 @@
   \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\tiny\ttfamily}}}
 \makeatother
 
-\title[Intro to R and \LaTeX{} for IR]{Introduction to R and \LaTeX{} for\\Institutional Research}
+\title[Intro to R and \LaTeX{} for IR]{Introduction to R for Reproducible Research}
 \subtitle{}
-\author[Jason Bryer]{Jason M. Bryer}
+\author[Jason Bryer, Ph.D.]{Jason M. Bryer, Ph.D.}
 \institute[www.bryer.org]{Excelsior College\\\url{www.bryer.org}\\jason@bryer.org}
-\date[Nov 3-4, 2012]{November 3 \& 4, 2012\\NEAIR 39th Annual Conference\\Pre-Conference Workshop}
+\date[Nov 20, 2014]{November 20, 2014\\Albany useR Group}
 
 \begin{document}
 
@@ -97,28 +97,47 @@ options(warn=-1)
 \begin{frame}[c]
 	\frametitle{R's Roots... S}
 	\begin{itemize}
-	\item S is a language that was developed by John Chambers and others at Bell Labs.	\item S was initiated in 1976 as an internal statistical analysis environment - originally implemented as Fortran libraries.	\item Early versions of the language did not contain functions for statistical modeling.	\item In 1988 the system was rewritten in C and began to resemble the system that we have today (this was Version 3 of the language). The book Statistical Models in S by Chambers and Hastie (the blue book) documents the statistical analysis functionality.	\item Version 4 of the S language was released in 1998 and is the version we use today. The book Programming with Data by John Chambers (the green book) documents this version of the language.
+	\item S is a language that was developed by John Chambers and others at Bell Labs.
+	\item S was initiated in 1976 as an internal statistical analysis environment - originally implemented as Fortran libraries.
+	\item Early versions of the language did not contain functions for statistical modeling.
+	\item In 1988 the system was rewritten in C and began to resemble the system that we have today (this was Version 3 of the language). The book Statistical Models in S by Chambers and Hastie (the blue book) documents the statistical analysis functionality.
+	\item Version 4 of the S language was released in 1998 and is the version we use today. The book Programming with Data by John Chambers (the green book) documents this version of the language.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}[c]
 	\frametitle{History of S}
 	\begin{itemize}
-	\item In 1993 Bell Labs gave StatSci (now Insightful Corp.) an exclusive license to develop and sell the S language.	\item In 2004 Insightful purchased the S language from Lucent for \$2 million and is the current owner.	\item In 2006, Alcatel purchased Lucent Technologies and is now called Alcatel-Lucent.	\item Insightful sells its implementation of the S language under the product name S-PLUS and has built a number of fancy features (GUIs, mostly) on top of it-hence the "PLUS".	\item In 2008 Insightful is acquired by TIBCO for \$25 million; future of S-PLUS is uncertain.	\item The S language itself has not changed dramatically since 1998.	\item In 1998, S won the Association for Computing Machinery's Software System Award.
+	\item In 1993 Bell Labs gave StatSci (now Insightful Corp.) an exclusive license to develop and sell the S language.
+	\item In 2004 Insightful purchased the S language from Lucent for \$2 million and is the current owner.
+	\item In 2006, Alcatel purchased Lucent Technologies and is now called Alcatel-Lucent.
+	\item Insightful sells its implementation of the S language under the product name S-PLUS and has built a number of fancy features (GUIs, mostly) on top of it-hence the "PLUS".
+	\item In 2008 Insightful is acquired by TIBCO for \$25 million; future of S-PLUS is uncertain.
+	\item The S language itself has not changed dramatically since 1998.
+	\item In 1998, S won the Association for Computing Machinery's Software System Award.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}[c]
 In "Stages in the Evolution of S", John Chambers writes:
-\begin{quote}"[W]e wanted users to be able to begin in an interactive environment, where they did not consciously think of themselves as programming. Then as their needs became clearer and their sophistication increased, they should be able to slide gradually into programming, when the language and system aspects would become more important."
-\end{quote}http://www.stat.bell-labs.com/S/history.html
+\begin{quote}
+"[W]e wanted users to be able to begin in an interactive environment, where they did not consciously think of themselves as programming. Then as their needs became clearer and their sophistication increased, they should be able to slide gradually into programming, when the language and system aspects would become more important."
+\end{quote}
+http://www.stat.bell-labs.com/S/history.html
 \end{frame}
 
 \begin{frame}[c]
 	\frametitle{History of R}
 	\begin{itemize}
-	\item 1991: Created in New Zealand by Ross Ihaka and Robert Gentleman. Their experience developing R is documented in a 1996 JCGS paper.	\item 1993: First announcement of R to the public.	\item 1995: Martin M?achler convinces Ross and Robert to use the GNU General Public License to make R free software.	\item 1996: A public mailing list is created (R-help and R-devel)	\item 1997: The R Core Group is formed (containing some people associated with S-PLUS). The core group controls the source code for R.	\item 2000: R version 1.0.0 is released.	\item 2012: R version 2.15.2 is released on October 31, 2012.
-	\item There are now over 4,000 packages listed on CRAN. 
+	\item 1991: Created in New Zealand by Ross Ihaka and Robert Gentleman. Their experience developing R is documented in a 1996 JCGS paper.
+	\item 1993: First announcement of R to the public.
+	\item 1995: Martin M?achler convinces Ross and Robert to use the GNU General Public License to make R free software.
+	\item 1996: A public mailing list is created (R-help and R-devel)
+	\item 1997: The R Core Group is formed (containing some people associated with S-PLUS). The core group controls the source code for R.
+	\item 2000: R version 1.0.0 is released.
+	\item 2012: R version 2.15.2 is released on October 31, 2012.
+	\item 2013: R version 3.0 is released on April 3, 2013
+	\item There are now over 6,000 packages listed on CRAN. 
 	\end{itemize}
 \end{frame}
 
@@ -207,64 +226,10 @@ R.version$version.string
 
 \subsection{Editors}
 \begin{frame}[fragile]
-	\frametitle{Editors for R}
+	\frametitle{Editors for R \& \LaTeX{}}
 	There are many editors for R including the built in command line interface. However, we will make use of a relatively new Integrated Development Environment (IDE) designed specifically for R, namely RStudio (\url{http://rstudio.org}). It is available for Mac OS X, Windows, Linux, and as a Linux based server (which then runs in a web browser).
 	\begin{center}	\includegraphics[height=.5\paperheight]{figures/rstudio-windows.png} \end{center}
 \end{frame}
-
-\begin{frame}
-	\frametitle{Editors for \LaTeX{}}
-	Though RStudio supports \LaTeX{} and Sweave documents, we will utilize:
-	\begin{itemize}
-		\item TeXnicCenter \url{http://www.texniccenter.org/} for Windows and 
-		\item TeXShop \url{http://www.uoregon.edu/~koch/texshop/} for Mac OS X (Note that this is installed with MacTeX).
-	\end{itemize}
-	\ \\ \ \\
-	There are at least two PDF viewers for windows. I recommend using Sumatra (\url{http://blog.kowalczyk.info/software/sumatrapdf/download-free-pdf-viewer.html}) since you can build \LaTeX{} documents without first exiting the application.
-\end{frame}
-
-\subsection{Configuring \LaTeX{} with Sweave}
-
-\begin{frame}
-	\frametitle{Configuring TeXnicCenter with Sweave (Windows)}
-	\begin{columns}[c]
-	\column{.5\paperwidth}
-	\begin{itemize}[<+-| alert@+>]
-		\item Click the \texttt{Build} menu, then \texttt{Define output profile}.
-		\item Click \texttt{Add} to create a new profile. Name the new profile \texttt{Sweave}.
-		\item In the ``(La)TeX" tab, click the ``Run (La)TeX in this profile"
-		\item Click the \texttt{...} button for the ``Path to the (La)Tex compiler" option and locate \texttt{R.exe}. This will typically be \texttt{C:/Program Files/R/R-2.14.0/bin/R.exe} where the version number corresponds to the version of R installed.
-		\item For the ``Command line arguments to pass to the compiler," enter: \texttt{CMD Sweave --pdf \%nm}
-	\end{itemize}
-	\column{.5\paperwidth}
-		\includegraphics[width=.5\paperwidth]{figures/TeXnicCenterSweaveSetup1.png}
-	\end{columns}
-\end{frame}
-%http://www.agmonim.com/2010/12/texniccenter-and-adobe-reader-10-x/
-
-
-\begin{frame}[containsverbatim]
-	\frametitle{Sweave with TeXShop (Mac)}
-	In order to build Sweave files in TeXShop, you will need to create a custom "engine." First, create \texttt{Sweave.engine} in the \texttt{\textasciitilde/Library/TeXShop/Engines/} directory with the following contents:
-	\begin{center}
- \begin{boxedverbatim}
-#!/bin/bash
-
-export PATH=$PATH:/usr/textbin:/usr/local/bin
-R CMD Sweave "$1"
-pdflatex "${1%.*}"
-	\end{boxedverbatim}
-	\end{center}
-	This file must have executable permissions. Open the Terminal applications (located in the Applications/Utilities folder) and execute the following command:
-	\begin{center}
-	\begin{boxedverbatim}
-chmod 744 ~/Library/TeXShop/Engines/Sweave.engine
-	\end{boxedverbatim}
-	\end{center}
-	Restart TeXShop and you will be able to select Sweave from the list of typesets. 
-
-\end{frame}
-
 
 
 %%%%%%%%%% R %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -560,17 +525,6 @@ legend=rownames(counts), col=c('darkblue', 'darkred'))
 \end{figure}
 \end{frame}
 
-\begin{frame}[containsverbatim]
-	\frametitle{Pie Charts}
-\begin{figure}
-<<pie1,echo=TRUE,include=FALSE,keep.source=TRUE>>=
-pie(table(students$Division))
-@
-<<figpie1,fig=TRUE,echo=FALSE,eps=TRUE,results=hide,height=4.5>>=
-<<pie1>>
-@
-\end{figure}
-\end{frame}
 
 \subsection{ggplot2: A Grammar of Graphics}
 \begin{frame}[containsverbatim,fragile]
@@ -683,13 +637,13 @@ geom_vline
 		\item[]<1-| alert@5> \begin{verbatim} \date{May 2010}	\end{verbatim}
 		\item[]<1-| alert@6> \begin{verbatim} \begin{document}	\end{verbatim}
 		\item[]<1-| alert@6> \begin{verbatim} \maketitle	\end{verbatim}
-		\item[]<1-| alert@6> \begin{verbatim} Hello Association for Institutional Research! \end{verbatim}
+		\item[]<1-| alert@6> \begin{verbatim} Hello Albany useR Group! \end{verbatim}
 		\item[]<1-| alert@6> \begin{verbatim} \end{document}	\end{verbatim}
 		\item<2-| alert@2> This document is an article.
-		\item<3-| alert@3> Its title is \textit{Introduction to R and \LaTeX{} for IR}.
+		\item<3-| alert@3> Its title is \textit{Introduction to R for Reproducible Research}.
 		\item<4-| alert@4> Its author is \textit{Jason Bryer}.
 		\item<5-| alert@5> It was written in \textit{May 2010}.
-		\item<6-| alert@6> The document consists of a \textit{title} followed by the text \textit{Hello Association for Institutional Research}.
+		\item<6-| alert@6> The document consists of a \textit{title} followed by the text \textit{Hello Albany useR Group!}.
 	\end{itemize}
 \end{frame}
 
@@ -765,7 +719,7 @@ geom_vline
 
 \begin{frame}
 	\frametitle{Sweave Example}
-	\pgfputat{\pgfxy(2,-9)}{\pgfbox[left,base]{\pgfimage[height=1.2\textheight]{../ExampleSweave/SweaveExample.pdf}}}
+	\pgfputat{\pgfxy(2,-9)}{\pgfbox[left,base]{\pgfimage[height=1.2\textheight]{SweaveExample.pdf}}}
 \end{frame}
 
 
@@ -832,10 +786,11 @@ geom_vline
 
 
 \begin{frame}[c]
-	\LARGE{Thank You}\\
-	\normalsize
+	\Huge{Thank You}\\
+	\huge
 	Jason Bryer (jason@bryer.org)\\
-	\url{http://IntroRforIR.com}
+	\url{http://github.com/jbryer/IntroR}\\
+	\url{http://www.bryer.org}
 \end{frame}
 
 \end{document}

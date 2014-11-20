@@ -1,5 +1,5 @@
 #The working directory is where R will look for files by default
-setwd("~/Dropbox/Projects/Intro R & LaTeX for IR")
+setwd("~/Dropbox/Projects/IntroR")
 getwd()
 
 #The search command returns a list of loaded (or attached) packages
