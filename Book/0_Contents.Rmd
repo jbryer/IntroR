@@ -1,0 +1,107 @@
+---
+title: "Contents"
+author: "Jason Bryer and Kim Speerschneider"
+output: html_document
+---
+
+# Introduction to R for Institutional Research
+
+## Table of Contents
+
+1. [Introduction](1_Introduction.html)
+	* Why use R?
+	* Installation
+	* Navigating RStudio
+	* Packages
+	* R Profiles
+	* Conventions
+	* Companion Package (`irutils`)
+	* Colophon
+
+2. [The R Language](2_TheRLanguage.html)
+	* R as a Big Calculator
+	* Variables
+	* Data Structures
+		* Atomic Vectors
+			* `character`
+			* `numeric`
+			* `double`
+			* `integer`
+			* `logical`
+			* `complex`
+			* `raw`
+		* Factors
+		* Data Frames
+		* Matrices
+		* Lists
+		* Dates
+	* `str`
+	* `NA` versus `NULL`
+	* Data Manipulation
+		* Type Conversions
+		* Subsetting
+		* Sorting
+		* Merging
+		* `substr`
+		* Duplicates
+		* Missing Data
+
+3. [Data Input](3_DataInput.html)
+	* CSV (`read.csv`, `readr`)
+	* SPSS, SAS, Stata (`haven`)
+	* Excel (`readxl`)
+	* Databases
+		* ROBDC
+		* MySQL
+		* Managing SQL Libraries (`sqlutils`)
+	* Survey Data
+		* Qualtrics
+	* IPEDS
+
+4. [Programming Tools](4_ProgrammingTools.html)
+	* `if` Statements
+	* Loops
+		* `for` Loops
+		* `while` Loops
+	* User Defined Functions
+	* Objects and S3
+	
+5. [Statistics](5_Statistics.html)
+	* Descriptive Statistics
+		* `mean`, `median`, `mode`, `sd`, `IQR`, `summary`
+		* `aggregate`, `describe` and `describeBy`
+		* Frequency and Contingency Tables
+	* Correlations
+	* *t*-tests
+	* Linear Regression
+	* Logistic Regression
+	* Chi-Squared
+	* Analysis of Variance (ANOVA)
+
+6. [Data Visualization](6_DataVisualization.html)
+	* Base Graphics versus `ggplot`
+	* Histograms
+	* Barplots
+	* Scatterplots
+	* Density Plots
+	* Boxplots
+	* Heatmaps
+	* Advanced `ggplot2`
+		* `geom_line`
+		* `geom_text`
+		* Faceting
+		* Aesthetics
+	* Likert Data
+	
+7. [Document Creation](7_DocumentCreation.html)
+	* R Markdown
+	* LaTeX
+	* Shiny
+	* Automation with `makeR`
+
+## Appendicies
+
+A. Good Practices
+
+B. Reference Card
+

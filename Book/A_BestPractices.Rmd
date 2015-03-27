@@ -1,0 +1,6 @@
+---
+title: "Appendix A: Best Practices"
+author: "Jason Bryer and Kim Speerschneider"
+output: html_document
+---
+

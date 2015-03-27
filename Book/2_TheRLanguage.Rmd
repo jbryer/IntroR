@@ -1,0 +1,6 @@
+---
+title: "The R Language"
+author: "Jason Bryer and Kim Speerschneider"
+output: html_document
+---
+
