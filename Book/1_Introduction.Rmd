@@ -4,3 +4,38 @@ author: "Jason Bryer and Kim Speerschneider"
 output: html_document
 ---
 
+# Why use R?
+
+
+# Installation
+
+
+# Navigating RStudio
+
+
+# Packages
+
+R packages are collections of functions, data, and documentation to extend the base functionality of R. As of March 2015 there are over 6,000 packages available on the [Comprehensive R Archive Network](http://cran.r-project.org) (CRAN), the main repository hosting R packages.
+
+
+# Companion Package
+
+The `irutils` package contains functions and data that will be used throughout this books. The package can be installed from [CRAN](http://cran.r-project.org):
+
+```{r irutils, eval=FALSE}
+install.packages('irutils')
+```
+
+
+# Conventions
+
+
+
+
+# Colophon
+
+This book was written using [R](http://www.r-project.org), [RStudio](http://www.rstudio.com), and [R Markdown](http://rmarkdown.rstudio.com/) on [Github](http://github.com/jbryer/IntroR). You can view and download the source code as well as contribute fixes and suggestions on the Github repository at [github.com/jbryer/IntroR](http://github.com/jbryer/IntroR).
+
+```{r sessioninfo}
+devtools::session_info()
+```

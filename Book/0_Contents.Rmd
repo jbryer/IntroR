@@ -1,10 +1,8 @@
 ---
-title: "Contents"
+title: "Introduction to R for Institutional Research"
 author: "Jason Bryer and Kim Speerschneider"
 output: html_document
 ---
-
-# Introduction to R for Institutional Research
 
 ## Table of Contents
 
@@ -13,9 +11,8 @@ output: html_document
 	* Installation
 	* Navigating RStudio
 	* Packages
-	* R Profiles
-	* Conventions
 	* Companion Package (`irutils`)
+	* Conventions
 	* Colophon
 
 2. [The R Language](2_TheRLanguage.html)
