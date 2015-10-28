@@ -32,13 +32,21 @@
 #' \dontrun{
 #' package(c('devtools','lattice','ggplot2','psych'))
 #' }
-package <- function(pkgs, install=TRUE, update=FALSE, quiet=TRUE, verbose=TRUE, ...) {
+package <- function(pkgs, install=TRUE, update=FALSE, quiet=TRUE, verbose=FALSE, 
+					repos=getOption('repos'), ...) {
 	myrequire <- function(package, ...) {
 		result <- FALSE
-		if(quiet) { 
-			suppressMessages(suppressWarnings(result <- require(package, ...)))
+		if(paste0('package:', package) %in% search()) {
+			result <- TRUE
 		} else {
-			result <- suppressWarnings(require(package, ...))
+			if(quiet) { 
+				suppressMessages(suppressWarnings(result <- require(package, ...)))
+			} else {
+				suppressWarnings(result <- require(package, ...))
+			}
+# 			if(result & paste0('package:', package) %in% search()) {
+# 				try(detach(paste0('package:', package)), unload=TRUE, character.only=TRUE)
+# 			}
 		}
 		return(result)
 	}
@@ -48,7 +56,7 @@ package <- function(pkgs, install=TRUE, update=FALSE, quiet=TRUE, verbose=TRUE, 
 		}
 	}
 	
- 	installedpkgs <- installed.packages()
+ 	installedpkgs <- installed.packages(...)
 	availpkgs <- available.packages(...)[,c('Package','Version')]
 	if(nrow(availpkgs) == 0) {
 		warning(paste0('There appear to be no packages available from the ',
@@ -64,7 +72,9 @@ package <- function(pkgs, install=TRUE, update=FALSE, quiet=TRUE, verbose=TRUE, 
 						  available.version=rep(as.character(NA), length(pkgs)),
 						  stringsAsFactors=FALSE)
 	row.names(results) <- pkgs
-	for(i in pkgs) {
+	pb <- txtProgressBar(min=0, max=length(pkgs), style=3)
+	for(j in seq_along(pkgs)) {
+		i <- pkgs[j]
 		needInstall <- FALSE
 		if(i %in% row.names(installedpkgs)) {
 			v <- as.character(packageVersion(i))
@@ -92,7 +102,7 @@ package <- function(pkgs, install=TRUE, update=FALSE, quiet=TRUE, verbose=TRUE, 
 			}
 		}
 		if(needInstall | !myrequire(i, character.only=TRUE, ...)) {
-			install.packages(pkgs=i, quiet=quiet, ...)
+			install.packages(pkgs=i, quiet=quiet, repos=repos)
 			if(!myrequire(i, character.only=TRUE, ...)) {
 				warning(paste0('Error loading package: ', i))
 			} else {
@@ -104,6 +114,7 @@ package <- function(pkgs, install=TRUE, update=FALSE, quiet=TRUE, verbose=TRUE, 
 			results[i,]$loaded <- TRUE
 			results[i,]$loaded.version <- as.character(packageVersion(i))
 		}
+		setTxtProgressBar(pb, j)
 	}
 	if(verbose) {
 		return(results)
