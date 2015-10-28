@@ -38,6 +38,9 @@ Now we will install the first set of R packages. I have provided a setup script 
 source('https://raw.githubusercontent.com/jbryer/IntroR/master/Installation/Setup.r')
 ```
 
+If you get the following prompt, choose yes: *Do you want to attempt to install these from sources?*
+
+
 ![RStudio Setup.r](https://github.com/jbryer/CompStats/blob/master/Installation/Figures/Rstudio-SetupScript.png?raw=true)
 
 [^ Top](#)
