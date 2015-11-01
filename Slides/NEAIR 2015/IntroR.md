@@ -20,8 +20,7 @@ November 1, 2015
 * Installation instructions for R are here: https://github.com/jbryer/IntroR/blob/master/Installation/Install.md
 
 * Downlaod workshop materials here: https://github.com/jbryer/IntroR
-	* Slides: 
-	* Worksheet: 
+	* Download `NEAIR2015.zip` to get all slides, data, and workshop template.
 
 
 # Overview #####################################################################
@@ -336,7 +335,7 @@ sqldoc('StudentsInRange')
 ##    endDate   the end of the date range to return students. format(Sys.Date(), '%Y-%m-%d')
 ##  default.val
 ##   2012-01-01
-##   2015-10-31
+##   2015-11-01
 ## Returns (note that this list may not be complete):
 ##     variable                                              desc
 ##  CreatedDate the date the row was added to the warehouse data.
@@ -727,7 +726,7 @@ format(today, '%B %d, $Y')
 ```
 
 ```
-## [1] "October 31, $Y"
+## [1] "November 01, $Y"
 ```
 
 ```r

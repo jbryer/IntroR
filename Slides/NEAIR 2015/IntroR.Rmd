@@ -39,8 +39,6 @@ set.seed(2112)
 * Installation instructions for R are here: https://github.com/jbryer/IntroR/blob/master/Installation/Install.md
 
 * Downlaod workshop materials here: https://github.com/jbryer/IntroR
-	* Slides: 
-	* Worksheet: 
 
 
 # Overview #####################################################################

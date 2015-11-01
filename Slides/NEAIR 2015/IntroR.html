@@ -113,8 +113,7 @@
 <li>Downlaod workshop materials here: <a href='https://github.com/jbryer/IntroR' title=''>https://github.com/jbryer/IntroR</a>
 
 <ul>
-<li>Slides:</li>
-<li>Worksheet:</li>
+<li>Download <code>NEAIR2015.zip</code> to get all slides, data, and workshop template.</li>
 </ul></li>
 </ul>
 
@@ -416,7 +415,7 @@ WHERE CreatedDate &gt;= &#39;:startDate:&#39; AND CreatedDate &lt;= &#39;:endDat
 ##    endDate   the end of the date range to return students. format(Sys.Date(), &#39;%Y-%m-%d&#39;)
 ##  default.val
 ##   2012-01-01
-##   2015-10-31
+##   2015-11-01
 ## Returns (note that this list may not be complete):
 ##     variable                                              desc
 ##  CreatedDate the date the row was added to the warehouse data.
@@ -707,7 +706,7 @@ table(grade, useNA=&#39;ifany&#39;)</pre>
 <pre class = 'prettyprint lang-r'>today &lt;- Sys.Date()
 format(today, &#39;%B %d, $Y&#39;)</pre>
 
-<pre >## [1] &quot;October 31, $Y&quot;</pre>
+<pre >## [1] &quot;November 01, $Y&quot;</pre>
 
 <pre class = 'prettyprint lang-r'>as.Date(&#39;2015-NOV-01&#39;, format=&#39;%Y-%b-%d&#39;)</pre>
 
