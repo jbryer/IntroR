@@ -1,8 +1,9 @@
 # List of packages to install
-pkgs <- c('Deducer', 'devtools', 'doBy', 'dplyr', 'foreign', 'gdata', 'ggplot2',
+pkgs <- c('AER', 'Deducer', 'devtools', 'doBy', 'dplyr', 'foreign', 'gdata', 'ggplot2',
 		  'ggthemes','ggvis', 'haven', 'Hmisc', 'JGR', 'knitr','lubridate', 
-		  'maps', 'mapdata', 'maptools', 'openintro', 'psych', 'RCurl', 'readr', 
-		  'readxl', 'reshape2', 'rmarkdown', 'RODBC', 'roxygen2', 'seqinr', 
+		  'maps', 'mapdata', 'maptools', 'openintro', 'party', 'psych', 'randomForest',
+		  'RCurl', 'readr', 
+		  'readxl', 'reshape2', 'rmarkdown', 'ROCR', 'RODBC', 'roxygen2', 'seqinr', 
 		  'shiny', 'sm', 'sp', 'sqldf', 'stringr', 'survey', 
 		  'WriteXLS', 'XML', 'xtable')
 pkgs.github <- c('jbryer/likert', 'jbryer/sqlutils', 'jbryer/ipeds',

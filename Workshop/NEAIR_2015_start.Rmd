@@ -1,0 +1,82 @@
+---
+title: "NEAIR Workshop"
+author: ""
+date: ""
+output: html_document
+---
+
+This R markdown file is used to teach R for Institutional Researchers.
+
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
+# This R chunk will be used to prepare the data for analysis. Typically, we will
+# want to hide the R code and output in the final document.
+
+# Load the packages we will use
+library(ggplot2)
+library(psych)
+library(readxl)
+library(knitr)
+
+# Load data
+
+# Convert Military variable to logical
+
+# Convert Enrolled variable to a Date
+
+```
+
+There are `r ` in the `students` data set.
+
+## Descriptive Statistics
+
+The following tables summarizes the number of credits students have by Division.
+
+```{r credits, echo=TRUE, results='asis'}
+
+```
+
+## Number of Military Students by Division
+
+```{r militaryTable, echo=TRUE}
+
+# Print table as counts
+
+# Print table as proportion within division
+
+```
+
+#### Barplot of military students by division
+
+```{r militaryBarplot, echo=TRUE}
+# Hint: use position='dodge' to create side-by-side bars
+
+```
+
+## Distribution of Credits
+
+```{r histogram, echo=TRUE}
+# Use histogram
+
+```
+
+## Distribution of Time Enrolled by Division
+
+```{r enrolled, echo=TRUE}
+# Use boxplots
+
+```
+
+## Is there a difference in the number of credits by military and civilian students?
+
+```{r miltaryCredits, echo=TRUE}
+# What to do about NA credits? In this case missing credits mean 0
+
+# t-test maybe?
+
+
+# Create a function to print the results of p-value as p < 0.001, p < 0.01, p < 0.05 or p > 0.05
+
+```
+
+The difference between military and civilian credits is `r ` which is `r ` statistically significant with `r `
+

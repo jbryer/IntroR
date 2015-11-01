@@ -43,6 +43,12 @@ if(Sys.info()['sysname'] == 'Windows') {
 	print(paste("Welcome", Sys.info()['sysname'], "user"))
 }
 
+students <- read.xls('Data/ECStudents.xls')
+str(students)
+students$Enrolled2 <- as.Date(students$Enrolled, format='%m/%d/%y')
+
+format(Sys.Date(), format='%b %d, %Y')
+
 ################################################################################
 #The first data frame we will load contains the number of citations to R prepared
 #by David Firth from the ISI Web of Knowledge and Google Scholar.
