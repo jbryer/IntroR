@@ -1,0 +1,188 @@
+---
+title: "Intro to R Workshop"
+output: html_document
+---
+
+# Import
+
+In the R chunk below, load in the `students.csv`, `coursework.csv`, and `demographics.csv` files into R.
+
+```{r import-read}
+#students <- 
+#coursework <- 
+#demographics <- 
+```
+
+## Viewing Data
+
+Print the first six rows of `students` and the last six rows of `coursework`.
+
+```{r import-head}
+```
+
+What is the `str`ucture of these data frames?
+
+```{r import-str}
+```
+
+## Subsetting Data
+
+Print all the students who live in Vermont.
+
+```{r import-select}
+```
+
+Whare are all the different grade codes students have.
+
+```{r import-unique}
+```
+
+
+# Tidy
+
+Convert the appropriate date columns to actual dates (if they are not already).
+
+```{r tidy-convertdates}
+```
+
+Convert `GENDER` to a factor.
+
+```{r tidy-factor}
+```
+
+Convert `GRADE_CODE` to an ordered factor. You may wish to first convert all withdrawn grades (AW, MW, and W) to missing values first (i.e. `NA`).
+
+```{r tidy-orderedfactor}
+```
+
+Convert any missing values for `TRANSFER_CREDITS_EARNED` to zero.
+
+```{r tidy-missingtozero}
+```
+
+
+# Transform
+
+What are the number of students for each ethnicity group?
+
+```{r transform-table}
+```
+
+What is the proportion of students in each ethnicity group?
+
+```{r transform-proptable}
+```
+
+What is the number of students in each ethnicity group by gender?
+
+```{r transform-table2}
+```
+
+What is the proportion of students in each ethnicity group by gender where the rows equal 1 (or 100)?
+
+```{r transform-proptable2}
+```
+
+What is the n, mean, median, standard deviation, and interquartile range of overall GPA?
+
+```{r transform-descriptives}
+```
+
+What are the descriptives of overall GPA for each ethnicity group?
+
+```{r transform-describeBy}
+```
+
+Aggregate the number of hours and hours attempted by each student.
+
+```{r transform-aggregate}
+```
+
+Merge the `hours` and `hoursAttempted` to the students data frame.
+
+```{r transform-merge}
+```
+
+
+# Visualize
+
+```{r}
+library(ggplot2)
+```
+
+Create a histogram of the number transfer credits students have earned.
+
+```{r vis-histogram-transfer}
+```
+
+Change the bin with for each bar to 3 credits.
+
+```{r vis-histogram-transfer2}
+```
+
+Create a separate histogram for each school (i.e. `SCHOOL_CODE`).
+
+```{r vis-histogram-transfer3}
+```
+
+Create a density plot of the number of transfer credits.
+
+```{r vis-histogram-transfer4}
+
+```
+
+Create a bar plot ethnicity.
+
+```{r vis-barplot-ethnicity}
+
+```
+
+Color each bar based upon gender.
+
+```{r vis-barplot-gender}
+
+```
+
+Try adding `position='dodge'` to `geom_bar`.
+
+Color each bar based upon gender.
+
+```{r vis-barplot-genderethnicity}
+
+```
+
+Now, create a separate bar plot for military versus civilian.
+
+```{r vis-barplot-military}
+
+```
+
+Color each bar based upon gender.
+
+```{r vis-barplot-gendercolor}
+
+```
+
+Plot the relationship between GPA and overall GPA.
+
+```{r vis-scatterplot}
+
+```
+
+Add a Loess regression line.
+
+```{r vis-scatterplot2}
+
+```
+
+
+# Model
+
+Is there a difference in overall GPA between males and females?
+
+```{r model-ttest}
+
+```
+
+
+

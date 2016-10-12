@@ -16,15 +16,15 @@ These direct download links are provided for convenience and represent the lates
 * [R](https://cran.r-project.org/bin/windows/base/)
 * [RStudio](https://www.rstudio.com/products/rstudio/download/)
 * [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
-* [MiKTeX](http://miktex.org/download)
-* [ActivePerl](http://www.activestate.com/activeperl/downloads)
+* [MiKTeX](http://miktex.org/download) - This is an optional install.
+* [ActivePerl](http://www.activestate.com/activeperl/downloads) - This is an optional install.
 
 ##### Mac #####
 
 * [R](https://cran.r-project.org/bin/macosx/)
-* [Basic TeX](https://tug.org/mactex/morepackages.html) (Note: MacTex is a large, often slow, download. Basic Tex is a smaller version and is sufficient for this workshop.)
 * [RStudio](https://www.rstudio.com/products/rstudio/download/)
 * [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) - Once installed, start Xcode (located in the Applications folder) and accept the user agreement. Once accepted, you can quit the application.
+* [Basic TeX](https://tug.org/mactex/morepackages.html) (Note: MacTex is a large, often slow, download. Basic Tex is a smaller version and is sufficient for this workshop.) - This is an optional install.
 * [Java](https://support.apple.com/kb/DL1572?locale=en_US) - This is an optional install.
 
 [^ Top](#)

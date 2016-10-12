@@ -1,0 +1,231 @@
+---
+title: "Intro to R Workshop"
+output: html_document
+---
+
+# Import
+
+In the R chunk below, load in the `students.csv`, `coursework.csv`, and `demographics.csv` files into R.
+
+```{r import-read}
+students <- read.csv('Data/students.csv', stringsAsFactors = FALSE)
+coursework <- read.csv('Data/coursework.csv', stringsAsFactors = FALSE)
+demographics <- read.csv('Data/demographics.csv', stringsAsFactors = FALSE)
+```
+
+## Viewing Data
+
+Print the first six rows of `students` and the last six rows of `coursework`.
+
+```{r import-head}
+head(students)
+tail(coursework)
+```
+
+What is the `str`ucture of these data frames?
+
+```{r import-str}
+str(students)
+str(coursework)
+str(demographics)
+```
+
+## Subsetting Data
+
+Print all the students who live in Vermont.
+
+```{r import-select}
+students[which(students$STATE_CODE == 'VT'),]
+```
+
+Whare are all the different grade codes students have.
+
+```{r import-unique}
+unique(coursework$GRADE_CODE)
+```
+
+
+# Tidy
+
+Convert the appropriate date columns to actual dates (if they are not already).
+
+```{r tidy-convertdates}
+students$ENROLL_DATE <- as.Date(students$ENROLL_DATE)
+students$DATE_OF_BIRTH <- as.Date(students$DATE_OF_BIRTH)
+coursework$DATE_TAKEN <- as.Date(coursework$DATE_TAKEN)
+```
+
+Convert `GENDER` to a factor.
+
+```{r tidy-factor}
+students$GENDER <- as.factor(students$GENDER)
+```
+
+Convert `GRADE_CODE` to an ordered factor. You may wish to first convert all withdrawn grades (AW, MW, and W) to missing values first (i.e. `NA`).
+
+```{r tidy-orderedfactor}
+coursework[coursework$GRADE_CODE %in% c('AW','MW','W','I'),]$GRADE_CODE <- NA
+unique(coursework$GRADE_CODE)
+coursework$GRADE_CODE <- factor(coursework$GRADE_CODE,
+					            levels = c('F','D','C','B','P','A'),
+					            ordered = TRUE)
+```
+
+Convert any missing values for `TRANSFER_CREDITS_EARNED` to zero.
+
+```{r tidy-missingtozero}
+students[is.na(students$TRANSFER_CREDITS_EARNED),]$TRANSFER_CREDITS_EARNED <- 0
+```
+
+
+# Transform
+
+What are the number of students for each ethnicity group?
+
+```{r transform-table}
+table(students$ETHNICITY, useNA='ifany')
+```
+
+What is the proportion of students in each ethnicity group?
+
+```{r transform-proptable}
+prop.table(
+	table(students$ETHNICITY, useNA='ifany')
+) * 100
+```
+
+What is the number of students in each ethnicity group by gender?
+
+```{r transform-table2}
+table(students$ETHNICITY, students$GENDER, useNA='ifany')
+```
+
+What is the proportion of students in each ethnicity group by gender where the rows equal 1 (or 100)?
+
+```{r transform-proptable2}
+prop.table(	table(students$ETHNICITY, students$GENDER, useNA='ifany'), 1 ) * 100
+```
+
+What is the n, mean, median, standard deviation, and interquartile range of overall GPA?
+
+```{r transform-descriptives}
+mean(students$OVERALL_GPA, na.rm=TRUE)
+median(students$OVERALL_GPA, na.rm=TRUE)
+sd(students$OVERALL_GPA, na.rm=TRUE)
+IQR(students$OVERALL_GPA, na.rm=TRUE)
+summary(students$OVERALL_GPA, na.rm=TRUE)
+
+library(psych)
+describe(students$OVERALL_GPA)
+```
+
+What are the descriptives of overall GPA for each ethnicity group?
+
+```{r transform-describeBy}
+describeBy(students$OVERALL_GPA, group=students$ETHNICITY, mat=TRUE)
+```
+
+Aggregate the number of hours and hours attempted by each student.
+
+```{r transform-aggregate}
+hours <- aggregate(coursework$HOURS, by=list(coursework$ID), FUN=sum)
+head(hours)
+names(hours) <- c('ID','Hours')
+
+hoursAttempted <- aggregate(coursework$HOURS_ATTEMPTED, by=list(coursework$ID), FUN=sum)
+head(hoursAttempted)
+names(hoursAttempted) <- c('ID', 'HoursAttempted')
+```
+
+Merge the `hours` and `hoursAttempted` to the students data frame.
+
+```{r transform-merge}
+students <- merge(students, hours, by='ID', all.x=TRUE)
+students <- merge(students, hoursAttempted, by='ID', all.x=TRUE)
+head(students)
+```
+
+
+# Visualize
+
+```{r}
+library(ggplot2)
+```
+
+Create a histogram of the number transfer credits students have earned.
+
+```{r vis-histogram-transfer}
+ggplot(students, aes(x=TRANSFER_CREDITS_EARNED)) + geom_histogram()
+```
+
+Change the bin with for each bar to 3 credits.
+
+```{r vis-histogram-transfer2}
+ggplot(students, aes(x=TRANSFER_CREDITS_EARNED)) + geom_histogram(binwidth=2)
+```
+
+Create a separate histogram for each school (i.e. `SCHOOL_CODE`).
+
+```{r vis-histogram-transfer3}
+ggplot(students, aes(x=TRANSFER_CREDITS_EARNED)) + geom_histogram() +
+	facet_wrap(~ SCHOOL_CODE, ncol=1)
+```
+
+Create a density plot of the number of transfer credits.
+
+```{r vis-histogram-transfer}
+ggplot(students, aes(x=TRANSFER_CREDITS_EARNED)) + geom_density()
+```
+
+Create a bar plot ethnicity.
+
+```{r vis-barplot-ethnicity}
+ggplot(students, aes(x=ETHNICITY)) + geom_bar()
+```
+
+Color each bar based upon gender.
+
+```{r vis-barplot-ethnicity}
+ggplot(students, aes(x=ETHNICITY, fill=GENDER)) + geom_bar()
+```
+
+Try adding `position='dodge'` to `geom_bar`.
+
+Color each bar based upon gender.
+
+```{r vis-barplot-ethnicity}
+ggplot(students, aes(x=ETHNICITY, fill=GENDER)) + geom_bar(position='dodge')
+```
+
+Now, create a separate bar plot for military versus civilian.
+
+Color each bar based upon gender.
+
+```{r vis-barplot-ethnicity}
+ggplot(students, aes(x=ETHNICITY, fill=GENDER)) + geom_bar() + 
+	facet_wrap(~ ACTIVE_MIL_STUDENT, ncol=1)
+```
+
+Plot the relationship between GPA and overall GPA.
+
+```{r vis-scatterplot}
+ggplot(students, aes(x=EC_GPA, y=OVERALL_GPA)) + geom_point()
+```
+
+Add a Loess regression line.
+
+```{r vis-scatterplot2}
+ggplot(students, aes(x=EC_GPA, y=OVERALL_GPA)) + geom_point() + geom_smooth()
+```
+
+
+# Model
+
+Is there a difference in overall GPA between males and females?
+
+```{r model-gendergpa}
+t.test(OVERALL_GPA ~ GENDER, data=students)
+```
+
+
+
