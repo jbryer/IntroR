@@ -184,5 +184,3 @@ Is there a difference in overall GPA between males and females?
 
 ```
 
-
-
