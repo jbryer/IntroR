@@ -1,0 +1,2118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Introduction to R</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+  <meta name="date" content="2016-11-13" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link rel="stylesheet" media="all" href="IntroR_files/ioslides-13.5.1/fonts/fonts.css">
+
+  <link rel="stylesheet" media="all" href="IntroR_files/ioslides-13.5.1/theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="IntroR_files/ioslides-13.5.1/theme/css/phone.css">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Introduction to R',
+                        subtitle: 'North East Association for Institutional Research',
+                useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                      },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Jason Bryer, Ph.D.' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+
+  </style>
+
+
+</head>
+
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+            <p style="margin-top: 6px; margin-left: -2px;">November 13, 2016</p>
+          </hgroup>
+  </slide>
+
+<slide class=''><hgroup><h2>Agenda</h2></hgroup><article  id="agenda" class="smaller ">
+
+<ul>
+<li>Overview</li>
+<li>Loading Data</li>
+<li>The R Language</li>
+<li>Statistics</li>
+<li>Data Visualization</li>
+<li>Document Preparation with R Markdown</li>
+<li>Advanced Statistics and Predictive Modeling</li>
+<li>Interactive Documents with Shiny</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Installation</h2></hgroup><article  id="installation" class="smaller ">
+
+<ul>
+<li>Instructions for R are here: <a href='https://github.com/jbryer/IntroR/blob/master/Installation/Install.md' title=''>https://github.com/jbryer/IntroR/blob/master/Installation/Install.md</a>
+
+<ul>
+<li>R: <a href='https://cran.r-project.org/' title=''>https://cran.r-project.org/</a></li>
+<li>RStudio: <a href='https://www.rstudio.com/products/rstudio/download/' title=''>https://www.rstudio.com/products/rstudio/download/</a></li>
+</ul></li>
+<li>Downlaod workshop materials here: <a href='https://github.com/jbryer/IntroR' title=''>https://github.com/jbryer/IntroR</a></li>
+</ul>
+
+<img src='GithubDownloadScreen.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Installing R Packages</h2></hgroup><article  id="installing-r-packages" class="smaller ">
+
+<p>Open the <code>Installation/setup.R</code> file in RStudio and click the <code>Source</code> button.</p>
+
+<p>Or run this command in R:</p>
+
+<pre class = 'prettyprint lang-r'>source(&#39;https://raw.githubusercontent.com/jbryer/IntroR/master/Installation/Setup.r&#39;)</pre>
+
+<p>This is the contents of that R script:</p>
+
+<pre class = 'prettyprint lang-r'>pkgs &lt;- c(&#39;tidyverse&#39;,&#39;devtools&#39;,&#39;reshape2&#39;,&#39;RSQLite&#39;,
+          &#39;psa&#39;,&#39;multilevelPSA&#39;,&#39;PSAboot&#39;,&#39;TriMatch&#39;,&#39;likert&#39;,
+          &#39;openintro&#39;,&#39;OIdata&#39;,&#39;psych&#39;,&#39;knitr&#39;,&#39;markdown&#39;,&#39;rmarkdown&#39;,&#39;shiny&#39;)
+
+install.packages(pkgs)
+
+devtools::install_github(&#39;jbryer/ipeds&#39;)
+devtools::install_github(&#39;jbryer/sqlutils&#39;)
+devtools::install_github(&quot;seankross/lego&quot;)</pre>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Overview</h2></hgroup><article  id="overview" class="smaller ">
+
+</article></slide><slide class=''><hgroup><h2>What is R?</h2></hgroup><article  id="what-is-r" class="smaller ">
+
+<p>&quot;R is a language and environment for statistical computing and graphics. It is a GNU project which is similar to the S language and environment which was developed at Bell Laboratories (formerly AT&amp;T, now Lucent Technologies) by John Chambers and colleagues&#8230;&quot;</p>
+
+<p>&quot;R provides a wide variety of statistical (linear and non linear modeling, classical statistical tests, time-series analysis, classification, clustering, &#8230;) and graphical techniques, and is highly extensible. The S language is often the vehicle of choice for research in statistical methodology, and R provides an Open Source route to participation in that activity.&quot;<br/>(R-project.org)</p>
+
+</article></slide><slide class=''><hgroup><h2>Pros</h2></hgroup><article  id="pros" class="smaller ">
+
+<ul class = 'build'>
+<li>FREE! <em>R is available as Free Software under the terms of the Free Software Foundation&#39;s GNU General Public License in source code form. It compiles and runs on a wide variety of UNIX platforms and similar systems (including FreeBSD and Linux), Windows and MacOS.</em></li>
+<li>Available for multiple platforms (i.e. Windows, Mac, Linux).</li>
+<li>Easily extensible with 0 packages listed on CRAN (as of November 13, 2016).</li>
+<li>Scriptable.</li>
+<li>Publication grade graphics.</li>
+<li>Multiple ways of doing the same thing.</li>
+<li>Quickly becoming the <em>de facto</em> standard among statistician.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Cons</h2></hgroup><article  id="cons" class="smaller ">
+
+<ul class = 'build'>
+<li>Has a steeper learning curve.</li>
+<li>Multiple ways of doing the same thing.</li>
+<li>Can have difficulty with <em>very</em> large datasets.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>The Popularity of R</h2></hgroup><article  id="the-popularity-of-r" class="smaller flexbox vcenter">
+
+<img src='IntroR_files/figure-html/Rcitations-1.png' title=''/>
+
+<p>Firth, D (2011). R and citations. Weblog entry at URL <a href='https://statgeek.wordpress.com/2011/06/25/r-and-citations/' title=''>https://statgeek.wordpress.com/2011/06/25/r-and-citations/</a>.</p>
+
+<p>See also: Muenchen, R.A. (2015). The Popularity of Data Analysis Software. Welog entry at URL <a href='http://r4stats.com/articles/popularity/' title=''>http://r4stats.com/articles/popularity/</a></p>
+
+</article></slide><slide class=''><hgroup><h2>R&#39;s Roots&#8230; S</h2></hgroup><article  id="rs-roots...-s" class="smaller ">
+
+<ul>
+<li>S is a language that was developed by John Chambers and others at Bell Labs.</li>
+<li>S was initiated in 1976 as an internal statistical analysis environment - originally implemented as Fortran libraries.</li>
+<li>Early versions of the language did not contain functions for statistical modeling.</li>
+<li>In 1988 the system was rewritten in C and began to resemble the system that we have today (this was Version 3 of the language). The book Statistical Models in S by Chambers and Hastie (the blue book) documents the statistical analysis functionality.</li>
+<li>Version 4 of the S language was released in 1998 and is the version we use today. The book Programming with Data by John Chambers (the green book) documents this version of the language.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>History of S</h2></hgroup><article  id="history-of-s" class="smaller ">
+
+<ul>
+<li>In 1993 Bell Labs gave StatSci (now Insightful Corp.) an exclusive license to develop and sell the S language.</li>
+<li>In 2004 Insightful purchased the S language from Lucent for $2 million and is the current owner.</li>
+<li>In 2006, Alcatel purchased Lucent Technologies and is now called Alcatel-Lucent.</li>
+<li>Insightful sells its implementation of the S language under the product name S-PLUS and has built a number of fancy features (GUIs, mostly) on top of it-hence the &quot;PLUS&quot;.</li>
+<li>In 2008 Insightful is acquired by TIBCO for $25 million; future of S-PLUS is uncertain.</li>
+<li>The S language itself has not changed dramatically since 1998.</li>
+<li>In 1998, S won the Association for Computing Machinery&#39;s Software System Award.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2></h2></hgroup><article  id="section" class="smaller ">
+
+<p>In &quot;Stages in the Evolution of S&quot;, John Chambers writes:</p>
+
+<blockquote>
+
+&quot;[W]e wanted users to be able to begin in an interactive environment, where they did not consciously think of themselves as programming. Then as their needs became clearer and their sophistication increased, they should be able to slide gradually into programming, when the language and system aspects would become more important.&quot;
+
+</blockquote>
+
+<p><a href='http://www.stat.bell-labs.com/S/history.html' title=''>http://www.stat.bell-labs.com/S/history.html</a></p>
+
+</article></slide><slide class=''><hgroup><h2>History of R</h2></hgroup><article  id="history-of-r" class="smaller ">
+
+<ul>
+<li>1991: Created in New Zealand by Ross Ihaka and Robert Gentleman. Their experience developing R is documented in a 1996 JCGS paper.</li>
+<li>1993: First announcement of R to the public.</li>
+<li>1995: Martin Machler convinces Ross and Robert to use the GNU General Public License to make R free software.</li>
+<li>1996: A public mailing list is created (R-help and R-devel)</li>
+<li>1997: The R Core Group is formed (containing some people associated with S-PLUS). The core group controls the source code for R.</li>
+<li>2000: R version 1.0.0 is released.</li>
+<li>2013: R version 3.0 is released on April 3, 2013.</li>
+<li>2015: Current version of R is 3.3.1</li>
+<li>There are 0 packages listed on CRAN.</li>
+</ul>
+
+<p><br /></p>
+
+<div style="font-size:60%;">
+<p>More information:<br/>* <a href='https://cran.r-project.org/doc/html/interface98-paper/paper_2.html' title=''>R : Past and Future History &#8211; A Free Software Project</a><br/>* <a href='http://blog.revolutionanalytics.com/2016/03/16-years-of-r-history.html' title=''>Over 16 years of R Project history</a><br/>* <a href='https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf' title=''>The R Project: A Brief History and Thoughts About the Future</a></p></div>
+
+</article></slide><slide class=''><hgroup><h2>Installing R</h2></hgroup><article  id="installing-r" class="smaller ">
+
+<p>The latest version of R can be downloaded from <a href='http://cran.r-project.org' title=''>cran.r-project.org</a>. The current version of R is:</p>
+
+<pre class = 'prettyprint lang-r'>R.version$version.string</pre>
+
+<pre >## [1] &quot;R version 3.3.1 (2016-06-21)&quot;</pre>
+
+<p>You will also want to install <a href='http://rstudio.com' title=''>RStudio</a>.</p>
+
+<p>Installation instructions are available here: <a href='https://github.com/jbryer/IntroR/blob/master/Installation/Install.md' title=''>https://github.com/jbryer/IntroR/blob/master/Installation/Install.md</a></p>
+
+<p>To install the set of packages used for this workshop, run the following R command:</p>
+
+<pre class = 'prettyprint lang-r'>source(&#39;https://raw.githubusercontent.com/jbryer/IntroR/master/Installation/Setup.r&#39;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>R as a Big Calculator</h2></hgroup><article  id="r-as-a-big-calculator" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>2 + 2</pre>
+
+<pre >## [1] 4</pre>
+
+<pre class = 'prettyprint lang-r'>1 + sin(9)</pre>
+
+<pre >## [1] 1.412118</pre>
+
+<pre class = 'prettyprint lang-r'>exp(1) ^ (1i * pi)</pre>
+
+<pre >## [1] -1+0i</pre>
+
+</article></slide><slide class=''><hgroup><h2>Euler&#39;s Formula</h2></hgroup><article  id="eulers-formula" class="smaller ">
+
+<p><font size='+3'> \[ { e }^{ i\pi  }+1=0 \] </font></p>
+
+<p>&quot;The most remarkable formula in mathematics&quot;<br/>- Richard Feyneman</p>
+
+</article></slide><slide class=''><hgroup><h2>R Packages</h2></hgroup><article  id="r-packages" class="smaller ">
+
+<p>One aspect that makes R popular is how (relatively) easy it is to extend it&#39;s functionality vis-à-vis R packages. R packages are collections of R functions, data, and documentation.</p>
+
+<p>The Comprehensive R Archive Network (<a href='http://cran.r-project.org' title=''>CRAN</a>) is the central repository where R packages are published. However, it should be noted that there are mirrors located across the globe.</p>
+
+<p>Using packages requires two steps: first, install the package (required once per R installation); and second, load the package (once per R session).</p>
+
+<pre class = 'prettyprint lang-r'>install.packages(&#39;likert&#39;)</pre>
+
+<pre class = 'prettyprint lang-r'>library(likert)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Installed and Loaded Packages</h2></hgroup><article  id="installed-and-loaded-packages" class="smaller ">
+
+<p>The <code>library()</code> function without any parameters will print all installed R packages whereas the <code>search()</code> function will list loaded packages (technically all available namespaces/environments, more on that later).</p>
+
+<pre class = 'prettyprint lang-r'>library()
+search()</pre>
+
+<pre >##  [1] &quot;.GlobalEnv&quot;        &quot;package:likert&quot;    &quot;package:xtable&quot;    &quot;package:dplyr&quot;    
+##  [5] &quot;package:stats&quot;     &quot;package:graphics&quot;  &quot;package:grDevices&quot; &quot;package:utils&quot;    
+##  [9] &quot;package:datasets&quot;  &quot;package:ggplot2&quot;   &quot;package:methods&quot;   &quot;Autoloads&quot;        
+## [13] &quot;package:base&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Github Packages</h2></hgroup><article  id="github-packages" class="smaller ">
+
+<p><a href='http://github.com' title=''>Github</a> is an online source repository and has become a popular place for R package developers to store their R packages. The <code>devtools</code> R package, designed to help package developers, has a function, <code>install_github</code> that will install R packages from a Github repository.</p>
+
+<pre class = 'prettyprint lang-r'>devtools::install_github(&#39;jbryer/likert&#39;)</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>ls()</code></h2></hgroup><article  id="ls" class="smaller ">
+
+<p>We can use the <code>ls()</code> function to determine what functions are available in a package.</p>
+
+<pre class = 'prettyprint lang-r'>ls(&#39;package:likert&#39;)</pre>
+
+<pre >## [1] &quot;likert&quot;                &quot;likert.bar.plot&quot;       &quot;likert.density.plot&quot;   &quot;likert.heat.plot&quot;     
+## [5] &quot;likert.histogram.plot&quot; &quot;recode&quot;                &quot;reverse.levels&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Getting Help</h2></hgroup><article  id="getting-help" class="smaller ">
+
+<p>R provides extensive documentation and help. The help.start() function will launch a webpage with links to: * The R manuals * The R FAQ * Search engine * and many other useful sites</p>
+
+<p>The help.search() function will search the help file for a particular word or phrase. For example:</p>
+
+<pre class = 'prettyprint lang-r'>help.search(&#39;cross tabs&#39;)</pre>
+
+<p>To get documentation on a specific function, the <code>help()</code> function, or simply <code>?functionName</code> will open the documentation page in the web browser.</p>
+
+<p>Lastly, to search the R mailing lists, use the <code>RSiteSearch()</code> function.</p>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Loading Data</h2></hgroup><article  id="loading-data" class="smaller ">
+
+</article></slide><slide class=''><hgroup><h2>Reading Data</h2></hgroup><article  id="reading-data" class="smaller ">
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">Data File Type</th>
+<th align="left">Extension</th>
+<th align="left">Function</th>
+</tr>
+<tr class="odd">
+<td align="left">R Data</td>
+<td align="left">rda, rdata</td>
+<td align="left"><code>base::load</code></td>
+</tr>
+<tr class="even">
+<td align="left">Comma separated values</td>
+<td align="left">csv</td>
+<td align="left"><code>utils::read.csv</code>, <code>readr::read_csv</code></td>
+</tr>
+<tr class="odd">
+<td align="left">Other delimited files</td>
+<td align="left"></td>
+<td align="left"><code>utils::read.table</code>, <code>readr::read_delim</code></td>
+</tr>
+<tr class="even">
+<td align="left">Tab separated files</td>
+<td align="left"></td>
+<td align="left"><code>readr::read_tsv</code></td>
+</tr>
+<tr class="odd">
+<td align="left">Fixed width files</td>
+<td align="left"></td>
+<td align="left"><code>utils::read.fwf</code>, <code>readr::read_fwf</code></td>
+</tr>
+<tr class="even">
+<td align="left">SPSS</td>
+<td align="left">sav</td>
+<td align="left"><code>foreign::read.spss</code>, <code>haven::read_sav</code>, <code>haven::read_por</code></td>
+</tr>
+<tr class="odd">
+<td align="left">SAS</td>
+<td align="left">sas</td>
+<td align="left"><code>haven::read_sas</code></td>
+</tr>
+<tr class="even">
+<td align="left">Read lines</td>
+<td align="left"></td>
+<td align="left"><code>base::scan</code>, <code>readr::read_lines</code></td>
+</tr>
+<tr class="odd">
+<td align="left">Microsoft Excel</td>
+<td align="left">xls, xlsx</td>
+<td align="left"><code>gdata::read.xls</code>, <code>readxl::read_excel</code></td>
+</tr>
+<tr class="even">
+<td align="left">Qualtrics</td>
+<td align="left">N/A</td>
+<td align="left"><code>qualtrics::getSurveyResults</code></td>
+</tr>
+</table>
+
+</article></slide><slide class=''><hgroup><h2>Reading Data from Databases</h2></hgroup><article  id="reading-data-from-databases" class="smaller ">
+
+<p>The <code>RODBC</code> package is the most common way to connect to a variety of databases.</p>
+
+<ul>
+<li><code>odbcConnect</code> - Open a connection to an ODBC database</li>
+<li><code>sqlFetch</code> - Read a table from an ODBC database into a data frame</li>
+<li><code>sqlQuery</code> - Submit a query to an ODBC database and return the results</li>
+<li><code>close</code> - Close the connection</li>
+</ul>
+
+<p>Other packages used to connect to specific databases:</p>
+
+<ul>
+<li>MySQL - <code>RMySQL</code></li>
+<li>Oracle - <code>ROracle</code></li>
+<li>JDBC - <code>RJDBC</code></li>
+<li>SQLite - <code>RSQLite</code></li>
+<li>PostgreSQL - <code>RPosgreSQL</code></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>The <code>sqlutils</code> Package</h2></hgroup><article  id="the-sqlutils-package" class="smaller ">
+
+<p>The <a href='https://github.com/jbryer/sqlutils' title=''><code>sqlutils</code></a> is designed to help manage many query files and facilitates documenting and parameterizing the queries.</p>
+
+<pre class = 'prettyprint lang-r'>library(sqlutils)
+sqlPaths()</pre>
+
+<pre >## [1] &quot;/Users/jbryer/R/sqlutils/sql&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>getQueries()</pre>
+
+<pre >## [1] &quot;StudentsInRange&quot; &quot;StudentSummary&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>getParameters(&#39;StudentsInRange&#39;)</pre>
+
+<pre >## [1] &quot;startDate&quot; &quot;endDate&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Example SQL File (<code>StudentsInRange</code>)</h2></hgroup><article  id="example-sql-file-studentsinrange" class="smaller ">
+
+<pre >#&#39; Students enrolled within the given date range.
+#&#39; 
+#&#39; @param startDate the start of the date range to return students.
+#&#39; @default startDate format(Sys.Date(), &#39;%Y-01-01&#39;)
+#&#39; @param endDate the end of the date range to return students.
+#&#39; @default endDate format(Sys.Date(), &#39;%Y-%m-%d&#39;)
+#&#39; @return CreatedDate the date the row was added to the warehouse data.
+#&#39; @return StudentId the student id.
+SELECT * 
+FROM students 
+WHERE CreatedDate &gt;= &#39;:startDate:&#39; AND CreatedDate &lt;= &#39;:endDate:&#39;</pre>
+
+<pre class = 'prettyprint lang-r'>sqldoc(&#39;StudentsInRange&#39;)</pre>
+
+<pre >## Students enrolled within the given date range.
+## Parameters:
+##      param                                            desc                        default
+##  startDate the start of the date range to return students.                   &#39;2012-01-01&#39;
+##    endDate   the end of the date range to return students. format(Sys.Date(), &#39;%Y-%m-%d&#39;)
+##  default.val
+##   2012-01-01
+##   2016-11-13
+## Returns (note that this list may not be complete):
+##     variable                                              desc
+##  CreatedDate the date the row was added to the warehouse data.
+##    StudentId                                   the student id.</pre>
+
+</article></slide><slide class=''><hgroup><h2>Running Query</h2></hgroup><article  id="running-query" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>require(RSQLite)
+sqlfile &lt;- paste(system.file(package=&#39;sqlutils&#39;), &#39;/db/students.db&#39;, sep=&#39;&#39;)
+m &lt;- dbDriver(&quot;SQLite&quot;)
+conn &lt;- dbConnect(m, dbname=sqlfile)
+q1 &lt;- execQuery(&#39;StudentSummary&#39;, connection=conn)
+head(q1)</pre>
+
+<pre >##   CreatedDate count
+## 1  2011-07-15  2886
+## 2  2011-08-15  2983
+## 3  2011-09-15  3071
+## 4  2011-10-15  3059
+## 5  2011-11-15  3058
+## 6  2011-12-15  3074</pre>
+
+</article></slide><slide class=''><hgroup><h2>IPEDS Data</h2></hgroup><article  id="ipeds-data" class="smaller ">
+
+<p>The <code>ipeds</code> R package provides an interface to download data file from IPEDS.</p>
+
+<pre class = 'prettyprint lang-r'>library(ipeds)
+data(surveys)
+unique(surveys$Survey)</pre>
+
+<pre >## [1] Institutional Characteristics  Enrollments                    Completions                   
+## [4] Instructional staff/Salaries   Fall Staff                     Employees by Assigned Position
+## [7] Finance                        Graduation Rates              
+## 8 Levels: Completions Employees by Assigned Position Enrollments Fall Staff ... Instructional staff/Salaries</pre>
+
+<pre class = 'prettyprint lang-r'>head(surveys[,c(&#39;SurveyID&#39;,&#39;Title&#39;)])</pre>
+
+<pre >##   SurveyID                                                                               Title
+## 1       HD                                                               Directory information
+## 2       IC Educational offerings, organization, admissions, services and athletic associations
+## 3    IC_AY                                          Student charges for academic year programs
+## 4    IC_PY                                    Student charges by program (vocational programs)
+## 5    FLAGS                                           Response status for all survey components
+## 6    EFEST                                                                Estimated enrollment</pre>
+
+</article></slide><slide class=''><hgroup><h2>IPEDS Data</h2></hgroup><article  id="ipeds-data-1" class="smaller ">
+
+<p>The <code>getIPEDSSurvey</code> and <code>ipedsHelp</code> are the most commonly used functions. The former will download and load the data into R (note data is cached and downloaded once per installation); the latter will provide the data dictionary for the given survey.</p>
+
+<pre class = 'prettyprint lang-r'>directory &lt;- getIPEDSSurvey(&#39;HD&#39;, 2013)
+admissions &lt;- getIPEDSSurvey(&quot;IC&quot;, 2013)
+retention &lt;- getIPEDSSurvey(&quot;EFD&quot;, 2013)</pre>
+
+<pre class = 'prettyprint lang-r'>ipedsHelp(&#39;HD&#39;, 2013)</pre>
+
+<pre class = 'prettyprint lang-r'>head(directory, n=3)</pre>
+
+<pre >##   unitid                              instnm                           addr       city stabbr
+## 1 100654            Alabama A &amp; M University           4900 Meridian Street     Normal     AL
+## 2 100663 University of Alabama at Birmingham Administration Bldg Suite 1070 Birmingham     AL
+## 3 100690                  Amridge University                 1200 Taylor Rd Montgomery     AL
+##          zip fips obereg                  chfnm  chftitle      gentele    faxtele       ein   opeid
+## 1      35762    1      5 Dr. Andrew Hugine, Jr. President 2.563725e+09 2563725030 636001109  100200
+## 2 35294-0110    1      5           Ray L. Watts President 2.059344e+09 2059757114 636005396  105200
+## 3 36117-3553    1      5         Michael Turner President 3.343877e+13 3343873878 237034324 2503400
+##   opeflag                   webaddr                                      adminurl
+## 1       1             www.aamu.edu/    www.aamu.edu/admissions/pages/default.aspx
+## 2       1               www.uab.edu www.uab.edu/students/undergraduate-admissions
+## 3       1 www.amridgeuniversity.edu  www.amridgeuniversity.edu/au_admissions.html
+##                                                 faidurl
+## 1 www.aamu.edu/Admissions/fincialaid/Pages/default.aspx
+## 2               www.uab.edu/students/paying-for-college
+## 3        www.amridgeuniversity.edu/au_financialaid.html
+##                                                                                                 applurl
+## 1                                                      www.aamu.edu/Admissions/apply/Pages/default.aspx
+## 2                                           ssb.it.uab.edu/pls/sctprod/zsapk003_ug_web_appl.create_page
+## 3 https://www.amridgeuniversity.edu/Amridge/login.aspx?ReturnUrl=%2fAmridge%2fStudent%2fFormChoice.aspx
+##                                                                                  npricurl sector
+## 1                                          galileo.aamu.edu/netpricecalculator/npcalc.htm      1
+## 2                                         www.collegeportraits.org/AL/UAB/estimator/agree      1
+## 3 tcc.noellevitz.com/(S(miwoihs5stz5cpyifh4nczu0))/Amridge%20University/Freshman-Students      2
+##   iclevel control hloffer ugoffer groffer hdegofr1 deggrant hbcu hospital medical tribal locale
+## 1       1       1       9       1       1       12        1    1        2       2      2     12
+## 2       1       1       9       1       1       11        1    2        1       1      2     12
+## 3       1       2       9       1       1       11        1    2        2       2      2     12
+##   openpubl act newid deathyr closedat cyactive postsec pseflag pset4flg rptmth
+## 1        1  A     -2      -2       -2        1       1       1        1      1
+## 2        1  A     -2      -2       -2        1       1       1        1      1
+## 3        1  A     -2      -2       -2        1       1       1        1      1
+##                                              ialias instcat ccbasic ccipug ccipgrad ccugprof
+## 1                                              AAMU       2      18     13       18        9
+## 2                                                         2      15     11       17        8
+## 3 Southern Christian University |Regions University       2      21     11       13        6
+##   ccenrprf ccsizset carnegie landgrnt instsize  cbsa cbsatype csa necta f1systyp
+## 1        4       14       16        1        3 26620        1 290    -2        2
+## 2        5       15       15        2        4 13820        1 142    -2        1
+## 3        5        6       51        2        1 33860        1  -2    -2        2
+##                           f1sysnam f1syscod countycd          countynm cngdstcd  longitud latitude
+## 1                                        -2     1089    Madison County      105 -86.56850 34.78337
+## 2 The University of Alabama System   101050     1073  Jefferson County      107 -86.80917 33.50223
+## 3                                        -2     1101 Montgomery County      102 -86.17401 32.36261
+##   dfrcgid dfrcuscg
+## 1     138        1
+## 2     126        1
+## 3     164        2</pre>
+
+</article></slide><slide class=''><hgroup><h2>Your turn!</h2></hgroup><article  id="your-turn" class="smaller ">
+
+<p>Open the <code>Worshop.Rmd</code> file and load three data frames: <code>students</code>, <code>coursework</code>, and <code>deomographics</code> from the corresponding CSV files.</p>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>The R Language</h2></hgroup><article  id="the-r-language" class="smaller ">
+
+</article></slide><slide class=''><hgroup><h2>Arithmetic Operators</h2></hgroup><article  id="arithmetic-operators" class="smaller ">
+
+<ul>
+<li><code>+</code> - addition</li>
+<li><code>-</code> - subtraction</li>
+<li><code>*</code> - multiplication</li>
+<li><code>/</code> - division</li>
+<li><code>^</code> or <code>**</code> - exponentiation</li>
+<li><code>x %% y</code> - modulus (x mod y) 5%%2 is 1</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>5 %% 2</pre>
+
+<pre >## [1] 1</pre>
+
+<ul>
+<li><code>x %/% y</code> - integer division</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>5%/%2</pre>
+
+<pre >## [1] 2</pre>
+
+</article></slide><slide class=''><hgroup><h2>R Primitive Vectors</h2></hgroup><article  id="r-primitive-vectors" class="smaller ">
+
+<ul>
+<li><code>logicial</code> (e.g. <code>TRUE</code>, <code>FALSE</code>)</li>
+<li><code>integer</code> - whole numbers, either positive or negative (e.g. <code>2112</code>, <code>42</code>, <code>-1</code>)</li>
+<li><code>double</code> or <code>numeric</code> - real number (e.g. <code>0.05</code>, <code>pi</code>, <code>-Inf</code>, <code>NaN</code>)</li>
+<li><code>complex</code> - complex number (e.g. <code>1i</code>)</li>
+<li><code>character</code> - sequence of characters, or a string (e.g. <code>&quot;Hello NEAIR!&quot;</code>)</li>
+</ul>
+
+<p>You can use the <code>class</code> function to determine the type of an object.</p>
+
+<pre class = 'prettyprint lang-r'>tmp &lt;- c(2112, pi)
+class(tmp)</pre>
+
+<pre >## [1] &quot;numeric&quot;</pre>
+
+<p>To test if an object is of a particular class, use the <code>is.XXX</code> set of functions:</p>
+
+<pre class = 'prettyprint lang-r'>is.double(tmp)</pre>
+
+<pre >## [1] TRUE</pre>
+
+<p>And to convert from one type to another, use the <code>as.XXX</code> set of functions:</p>
+
+<pre class = 'prettyprint lang-r'>as.character(tmp)</pre>
+
+<pre >## [1] &quot;2112&quot;             &quot;3.14159265358979&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Lists</h2></hgroup><article  id="lists" class="smaller ">
+
+<p>A <code>list</code> is an object that contains a list of named values</p>
+
+<pre class = 'prettyprint lang-r'>tmp &lt;- list(a = 2112, b = pi, z = &quot;Hello NEAIR!&quot;)
+tmp</pre>
+
+<pre >## $a
+## [1] 2112
+## 
+## $b
+## [1] 3.141593
+## 
+## $z
+## [1] &quot;Hello NEAIR!&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>tmp[1]; class(tmp[1]) # One square backet: return a list</pre>
+
+<pre >## $a
+## [1] 2112</pre>
+
+<pre >## [1] &quot;list&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>tmp[[1]]; class(tmp[[2]]) # Two square brackets: return as object at that position</pre>
+
+<pre >## [1] 2112</pre>
+
+<pre >## [1] &quot;numeric&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Factors</h2></hgroup><article  id="factors" class="smaller ">
+
+<p>A <code>factor</code> is a way for R to store a nominal, or categorical, variable. R stores the underlying data as an integer where each value corresponds to a label.</p>
+
+<pre class = 'prettyprint lang-r'>gender &lt;- c(rep(&quot;male&quot;,4), rep(&quot;female&quot;, 6))
+gender</pre>
+
+<pre >##  [1] &quot;male&quot;   &quot;male&quot;   &quot;male&quot;   &quot;male&quot;   &quot;female&quot; &quot;female&quot; &quot;female&quot; &quot;female&quot; &quot;female&quot; &quot;female&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>gender &lt;- factor(gender, levels=c(&#39;male&#39;,&#39;female&#39;,&#39;unknown&#39;)) 
+gender</pre>
+
+<pre >##  [1] male   male   male   male   female female female female female female
+## Levels: male female unknown</pre>
+
+<pre class = 'prettyprint lang-r'>levels(gender)</pre>
+
+<pre >## [1] &quot;male&quot;    &quot;female&quot;  &quot;unknown&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Factors can be ordered</h2></hgroup><article  id="factors-can-be-ordered" class="smaller columns-2">
+
+<p>The <code>ordered</code> parameter indicates whether the levels in the factor should be ordered.</p>
+
+<pre class = 'prettyprint lang-r'>library(TriMatch)</pre>
+
+<pre >## Loading required package: scales</pre>
+
+<pre >## Loading required package: reshape2</pre>
+
+<pre >## Loading required package: ez</pre>
+
+<pre class = 'prettyprint lang-r'>data(tutoring, package=&#39;TriMatch&#39;)
+head(tutoring$Grade)</pre>
+
+<pre >## [1] 4 4 4 4 4 3</pre>
+
+<pre class = 'prettyprint lang-r'>grade &lt;- tutoring$Grade
+table(grade, useNA=&#39;ifany&#39;)</pre>
+
+<pre >## grade
+##   0   1   2   3   4 
+## 187  25  86 271 573</pre>
+
+<pre class = 'prettyprint lang-r'>grade &lt;- factor(tutoring$Grade,
+        levels=0:4,
+        labels=c(&#39;F&#39;,&#39;D&#39;,&#39;C&#39;,&#39;B&#39;,&#39;A&#39;), 
+        ordered=TRUE)
+table(grade, useNA=&#39;ifany&#39;)</pre>
+
+<pre >## grade
+##   F   D   C   B   A 
+## 187  25  86 271 573</pre>
+
+<p>With an ordered factor, coercing it back to an integer will maintain the order, but the values start with one!</p>
+
+<pre class = 'prettyprint lang-r'>head(grade)</pre>
+
+<pre >## [1] A A A A A B
+## Levels: F &lt; D &lt; C &lt; B &lt; A</pre>
+
+<pre class = 'prettyprint lang-r'>table(as.integer(grade))</pre>
+
+<pre >## 
+##   1   2   3   4   5 
+## 187  25  86 271 573</pre>
+
+</article></slide><slide class=''><hgroup><h2>Dates</h2></hgroup><article  id="dates" class="smaller columns-2">
+
+<p>R stores dates in <code>YYYY-MM-DD</code> format. The <code>as.Date</code> function will convert characters to <code>Date</code>s if they are in that form. If not, the <code>format</code> can be specified to help R coerce it to a <code>Date</code> format.</p>
+
+<pre class = 'prettyprint lang-r'>today &lt;- Sys.Date()
+format(today, &#39;%B %d, $Y&#39;)</pre>
+
+<pre >## [1] &quot;November 13, $Y&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>as.Date(&#39;2015-NOV-01&#39;, format=&#39;%Y-%b-%d&#39;)</pre>
+
+<pre >## [1] &quot;2015-11-01&quot;</pre>
+
+<ul>
+<li><code>%d</code> - day as a number (i.e 0-31)</li>
+<li><code>%a</code> - abbreviated weekday (e.g. <code>Mon</code>)</li>
+<li><code>%A</code> - unabbreviated weekday (e.g. <code>Monday</code>)</li>
+<li><code>%m</code> - month (i.e. 00-12)</li>
+<li><code>%b</code> - abbreviated month (e.g. <code>Jan</code>)</li>
+<li><code>%B</code> - unabbreviated month (e.g. <code>January</code>)</li>
+<li><code>%y</code> - 2-digit year (e.g. <code>15</code>)</li>
+<li><code>%Y</code> - 4-digit year (e.g. <code>2015</code>)</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>NA versus NULL</h2></hgroup><article  id="na-versus-null" class="smaller ">
+
+<p>R is just as much a programming language as it is a statistical software package. As such it represents null differently for programming (using <code>NULL</code>) than for data (using <code>NA</code>).</p>
+
+<ul>
+<li><p><code>NULL</code> represents the null object in R: it is a reserved word. NULL is often returned by expressions and functions whose values are undefined.</p></li>
+<li><p><code>NA</code> is a logical constant of length 1 which contains a missing value indicator. <code>NA</code> can be freely coerced to any other vector type except raw. There are also constants <code>NA_integer</code> , <code>NA_real</code> , <code>NA_complex</code>, and <code>NA_character</code> of the other atomic vector types which support missing values: all of these are reserved words in the R language.</p></li>
+</ul>
+
+<p>For more details, see <a href='http://opendatagroup.com/2010/04/25/r-na-v-null/' title=''>http://opendatagroup.com/2010/04/25/r-na-v-null/</a></p>
+
+</article></slide><slide class=''><hgroup><h2>Handling Missing Data</h2></hgroup><article  id="handling-missing-data" class="smaller ">
+
+<p>There are a number of functions available for finding and subsetting missing values:</p>
+
+<ul>
+<li><code>is.na</code> - function that takes one parameter and returns a logical vector of the same length where <code>TRUE</code> indicates the value is missing in the original vector.</li>
+<li><code>complete.cases</code> - function that takes a data frame or matrix and returns <code>TRUE</code> if the entire row has <em>no</em> missing values.</li>
+<li><code>na.omit</code> - function that takes a data frame and matrix and returns a subset of that data frame or matrix with any rows containing missing values removed.</li>
+</ul>
+
+<p>Many statistical functions (e.g. <code>mean</code>, <code>sd</code>, <code>cor</code>) have a <code>na.rm</code> parameter that, when <code>TRUE</code>, will remove any missing values before calculating the statistic.</p>
+
+<p>There are two very good R packages for imputing missing values:</p>
+
+<ul>
+<li><a href='https://cran.r-project.org/web/packages/mice/index.html' title=''><code>mice</code></a> - <a href='https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=3&amp;cad=rja&amp;uact=8&amp;ved=0CDIQFjACahUKEwinhILMt-3IAhUCbSYKHYY9Bxc&amp;url=http%3A%2F%2Fwww.jstatsoft.org%2Farticle%2Fview%2Fv045i03%2Fv45i03.pdf&amp;usg=AFQjCNHzwk41fSeCTmRPowZFig2zPBTl8g&amp;sig2=VyDV7NMsIZXdwP8jd0uaJA' title=''>Multivariate Imputation by Chained Equations</a></li>
+<li><a href='https://cran.r-project.org/web/packages/Amelia/index.html' title=''><code>Amelia II</code></a> - <a href='https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=6&amp;cad=rja&amp;uact=8&amp;ved=0CE4QFjAFahUKEwjHn8aiuO3IAhWF8CYKHZzhABs&amp;url=http%3A%2F%2Fwww.jstatsoft.org%2Farticle%2Fview%2Fv045i07&amp;usg=AFQjCNE7Dn7a_YfAactbLSLRr3Fm3Rej2w&amp;sig2=t5NWLZMkyf_8MpCjSHAYFg&amp;bvm=bv.106379543,d.eWE' title=''>A Program for Missing Data</a></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Example: Excel File with Multiple Sheets</h2></hgroup><article  id="example-excel-file-with-multiple-sheets" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>library(gdata)
+summer2014 &lt;- read.xls(&#39;../../Data/MathAnxiety.xlsx&#39;, sheet=1)
+fall2014 &lt;- read.xls(&#39;../../Data/MathAnxiety.xlsx&#39;, sheet=2)
+summer2015 &lt;- read.xls(&#39;../../Data/MathAnxiety.xlsx&#39;, sheet=3)
+
+summer2014$Term &lt;- &#39;Summer 2014&#39;
+fall2014$Term &lt;- &#39;Fall 2014&#39;
+summer2015$Term &lt;- &#39;Summer 2015&#39;
+
+mass &lt;- rbind(summer2014, fall2014, summer2015)
+head(mass)</pre>
+
+<pre >##   Gender q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13 q14        Term
+## 1 Female  2  5  3  4  2  4  4  5  5   4   5   1   2   4 Summer 2014
+## 2 Female  5  1  5  1  4  1  1  1  1   4   1   4   4   1 Summer 2014
+## 3   Male  5  1  5  2  4  2  2  3  2   2   2   3   3   2 Summer 2014
+## 4 Female  4  4  5  2  4  3  3  3  2   3   2   3   3   3 Summer 2014
+## 5 Female  4  5  5  3  3  3  4  4  4   1   4   1   2   4 Summer 2014
+## 6 Female  5  2  5  1  5  1  1  5  2   3   2   4   4   1 Summer 2014</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data Frames</h2></hgroup><article  id="data-frames" class="smaller ">
+
+<p>Data frames are collection of vectors, thereby making them two dimensional. Unlike matrices (see <code>?matrix</code>) where all data elements are of the same type (i.e. numeric, character, logical, complex), each column in a data frame can be of a different type.</p>
+
+<pre class = 'prettyprint lang-r'>class(mass)</pre>
+
+<pre >## [1] &quot;data.frame&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>dim(mass) # Dimension of the data frame (row by column)</pre>
+
+<pre >## [1] 59 16</pre>
+
+<pre class = 'prettyprint lang-r'>nrow(mass) # Number of rows</pre>
+
+<pre >## [1] 59</pre>
+
+<pre class = 'prettyprint lang-r'>ncol(mass) # Number of columns</pre>
+
+<pre >## [1] 16</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>str</code></h2></hgroup><article  id="str" class="smaller ">
+
+<p>The <code>str</code> is perhaps the most useful function in R. It displays the structure of an R object.</p>
+
+<pre class = 'prettyprint lang-r'>str(mass)</pre>
+
+<pre >## &#39;data.frame&#39;:    59 obs. of  16 variables:
+##  $ Gender: Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 1 1 2 1 1 1 1 1 1 1 ...
+##  $ q1    : int  2 5 5 4 4 5 4 4 5 1 ...
+##  $ q2    : int  5 1 1 4 5 2 2 4 4 5 ...
+##  $ q3    : int  3 5 5 5 5 5 5 5 5 3 ...
+##  $ q4    : int  4 1 2 2 3 1 1 3 2 5 ...
+##  $ q5    : int  2 4 4 4 3 5 5 4 2 2 ...
+##  $ q6    : int  4 1 2 3 3 1 2 5 4 5 ...
+##  $ q7    : int  4 1 2 3 4 1 1 4 4 5 ...
+##  $ q8    : int  5 1 3 3 4 5 3 5 4 5 ...
+##  $ q9    : int  5 1 2 2 4 2 1 4 4 5 ...
+##  $ q10   : int  4 4 2 3 1 3 2 3 3 1 ...
+##  $ q11   : int  5 1 2 2 4 2 1 4 4 5 ...
+##  $ q12   : int  1 4 3 3 1 4 4 2 3 1 ...
+##  $ q13   : int  2 4 3 3 2 4 4 3 3 1 ...
+##  $ q14   : int  4 1 2 3 4 1 2 4 2 5 ...
+##  $ Term  : chr  &quot;Summer 2014&quot; &quot;Summer 2014&quot; &quot;Summer 2014&quot; &quot;Summer 2014&quot; ...</pre>
+
+</article></slide><slide class=''><hgroup><h2>Exploring the Data in Data Frames</h2></hgroup><article  id="exploring-the-data-in-data-frames" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>head(mass)</pre>
+
+<pre >##   Gender q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13 q14        Term
+## 1 Female  2  5  3  4  2  4  4  5  5   4   5   1   2   4 Summer 2014
+## 2 Female  5  1  5  1  4  1  1  1  1   4   1   4   4   1 Summer 2014
+## 3   Male  5  1  5  2  4  2  2  3  2   2   2   3   3   2 Summer 2014
+## 4 Female  4  4  5  2  4  3  3  3  2   3   2   3   3   3 Summer 2014
+## 5 Female  4  5  5  3  3  3  4  4  4   1   4   1   2   4 Summer 2014
+## 6 Female  5  2  5  1  5  1  1  5  2   3   2   4   4   1 Summer 2014</pre>
+
+<pre class = 'prettyprint lang-r'>tail(mass, n=3)</pre>
+
+<pre >##    Gender q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13 q14        Term
+## 57 Female  1  5  1  5  1  2  5  5  5   4   4   1   1   5 Summer 2015
+## 58   Male  4  3  5  2  5  2  2  3  2   5   2   3   4   3 Summer 2015
+## 59   Male  5  1  5  1  5  1  1  3  1   5   1   5   5   1 Summer 2015</pre>
+
+<p>The <code>View</code> function will provide a (read-only) spreadsheet view of the data frame.</p>
+
+<pre class = 'prettyprint lang-r'>View(mass)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Subsetting Data Frames</h2></hgroup><article  id="subsetting-data-frames" class="smaller ">
+
+<p>Using square brackets will allow you to subset from a data frame. The first parameter is for rows, the second for columns. Leaving one blank will return all rows or columns.</p>
+
+<pre class = 'prettyprint lang-r'>mass[c(1:2,10),] # Return the first, second, and tenth row</pre>
+
+<pre >##    Gender q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13 q14        Term
+## 1  Female  2  5  3  4  2  4  4  5  5   4   5   1   2   4 Summer 2014
+## 2  Female  5  1  5  1  4  1  1  1  1   4   1   4   4   1 Summer 2014
+## 10 Female  1  5  3  5  2  5  5  5  5   1   5   1   1   5 Summer 2014</pre>
+
+<pre class = 'prettyprint lang-r'>mass[,2] # Return the second column</pre>
+
+<pre >##  [1] 2 5 5 4 4 5 4 4 5 1 3 4 4 1 5 2 2 4 3 5 1 2 2 3 2 4 4 4 1 4 2 5 4 4 4 3 3 4 5 3 3 1 4 4 3 1 4 4
+## [49] 5 5 3 4 3 2 4 5 1 4 5</pre>
+
+<p>You can also subset columns using the dollar sign (<code>$</code>) notation.</p>
+
+<pre class = 'prettyprint lang-r'>mass$q10</pre>
+
+<pre >##  [1] 4 4 2 3 1 3 2 3 3 1 1 2 4 1 5 2 2 3 3 4 4 3 2 3 3 5 4 4 1 3 3 5 4 2 3 2 2 5 5 2 2 3 1 3 4 1 4 4
+## [49] 5 3 1 4 1 3 4 4 4 5 5</pre>
+
+</article></slide><slide class=''><hgroup><h2>Subsetting Missing Values</h2></hgroup><article  id="subsetting-missing-values" class="smaller ">
+
+<p>Using the <code>complete.cases</code> function, we can return rows with at least one missing values.</p>
+
+<pre class = 'prettyprint lang-r'>mass[!complete.cases(mass),]</pre>
+
+<pre >##    Gender q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13 q14        Term
+## 36 Female  3  4 NA  3  2  4  2  4  3   2   4   2   2   4   Fall 2014
+## 38   Male  4  2  5  2  5  2  2  3  2   5  NA   3   4   3   Fall 2014
+## 53 Female  3  3 NA  3  2  3  3  4  4   1   3   2   3   4 Summer 2015</pre>
+
+<p>Using the <code>is.na</code>, we can change replace the missing values.</p>
+
+<pre class = 'prettyprint lang-r'>(tmp &lt;- sample(c(1:5, NA)))</pre>
+
+<pre >## [1]  3  2  5  1  4 NA</pre>
+
+<pre class = 'prettyprint lang-r'>tmp[is.na(tmp)] &lt;- 2112
+tmp</pre>
+
+<pre >## [1]    3    2    5    1    4 2112</pre>
+
+</article></slide><slide class=''><hgroup><h2>Tip: One Column Data Frame</h2></hgroup><article  id="tip-one-column-data-frame" class="smaller ">
+
+<p>When selecting one column from a data frame, R will convert the returned object to a vector.</p>
+
+<pre class = 'prettyprint lang-r'>class(mass[,1])</pre>
+
+<pre >## [1] &quot;factor&quot;</pre>
+
+<p>You can use the <code>drop=FALSE</code> parameter keep the subset as a data frame.</p>
+
+<pre class = 'prettyprint lang-r'>class(mass[,1,drop=FALSE])</pre>
+
+<pre >## [1] &quot;data.frame&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Subsetting with Logical Operators</h2></hgroup><article  id="subsetting-with-logical-operators" class="smaller ">
+
+<p>You can subset using logical vectors. For example, there are 7764 rows in the <code>directory</code> data frame loaded from IPEDS. You can pass a logical vector of length 7764 where <code>TRUE</code> indicates to return the row and <code>FALSE</code> to not. For example, we wish to return the row with Excelsior College:</p>
+
+<pre class = 'prettyprint lang-r'>row &lt;- directory$instnm == &#39;Excelsior College&#39;
+length(row)</pre>
+
+<pre >## [1] 7764</pre>
+
+<p>Here we are using the <code>==</code> logical operator. This will test each element in the <code>directory$instnm</code> and return <code>TRUE</code> if it is equal to <code>Excelsior College</code>, <code>FALSE</code> otherwise.</p>
+
+<pre class = 'prettyprint lang-r'>directory[row, 1:16] # Include only 16 columns for display purposes</pre>
+
+<pre >##      unitid            instnm           addr   city stabbr        zip fips obereg            chfnm
+## 2783 196680 Excelsior College 7 Columbia Cir Albany     NY 12203-5159   36      2 John F. Ebersole
+##       chftitle    gentele    faxtele       ein  opeid opeflag           webaddr
+## 2783 President 5184648500 5184648777 141599643 283400       1 www.excelsior.edu</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>which</code></h2></hgroup><article  id="which" class="smaller ">
+
+<p>The <code>which</code> command will return an <code>integer</code> vector with the positions within the <code>logical</code> vector that are <code>TRUE</code>.</p>
+
+<pre class = 'prettyprint lang-r'>which(row)</pre>
+
+<pre >## [1] 2783</pre>
+
+<pre class = 'prettyprint lang-r'>directory[2783, 1:16]</pre>
+
+<pre >##      unitid            instnm           addr   city stabbr        zip fips obereg            chfnm
+## 2783 196680 Excelsior College 7 Columbia Cir Albany     NY 12203-5159   36      2 John F. Ebersole
+##       chftitle    gentele    faxtele       ein  opeid opeflag           webaddr
+## 2783 President 5184648500 5184648777 141599643 283400       1 www.excelsior.edu</pre>
+
+</article></slide><slide class=''><hgroup><h2>Logical Operators</h2></hgroup><article  id="logical-operators" class="smaller ">
+
+<ul>
+<li><code>!a</code> - TRUE if a is FALSE</li>
+<li><code>a == b</code> - TRUE if a and be are equal</li>
+<li><code>a != b</code> - TRUE if an and b are not equal</li>
+<li><code>a &gt; b</code> - TRUE if a is larger than b, but not equal</li>
+<li><code>a &gt;= b</code> - TRUE if a is larger or equal to b</li>
+<li><code>a &lt; b</code> - TRUE if a is smaller than be, but not equal</li>
+<li><code>a &lt;= b</code> - TRUE if a is smaller or equal to b</li>
+<li><code>a %in% b</code> - TRUE if a is in b where b is a vector</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>which( letters %in% c(&#39;a&#39;,&#39;e&#39;,&#39;i&#39;,&#39;o&#39;,&#39;u&#39;) )</pre>
+
+<pre >## [1]  1  5  9 15 21</pre>
+
+<ul>
+<li><code>a | b</code> - TRUE if a <em>or</em> b are TRUE</li>
+<li><code>a &amp; b</code> - TRUE if a <em>and</em> b are TRUE</li>
+<li><code>isTRUE(a)</code> - TRUE if a is TRUE</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Side Note: Operators are Functions</h2></hgroup><article  id="side-note-operators-are-functions" class="smaller ">
+
+<p>All operations (e.g. <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>[</code>, <code>&lt;-</code>) are functions.</p>
+
+<pre class = 'prettyprint lang-r'>class(`+`)</pre>
+
+<pre >## [1] &quot;function&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>`+`</pre>
+
+<pre >## function (e1, e2)  .Primitive(&quot;+&quot;)</pre>
+
+<pre class = 'prettyprint lang-r'>`+`(2, 3)</pre>
+
+<pre >## [1] 5</pre>
+
+<p>You can redefine these functions, but probably not a good idea ;-)</p>
+
+</article></slide><slide class=''><hgroup><h2>Your turn!</h2></hgroup><article  id="your-turn-1" class="smaller ">
+
+<p>Complete the Subsetting Data and Tidy sections of <code>Workshop.Rmd</code>.</p>
+
+</article></slide><slide class=''><hgroup><h2>Sorting Data</h2></hgroup><article  id="sorting-data" class="smaller ">
+
+<p>The <code>order</code> function will take one or more vectors (usually in the form of a data frame) and return an integer vector indicating the new order. There are two parameters to adjust where <code>NA</code>s are placed (<code>na.last=FALSE</code>) and whether to sort in increasing or decreasing order (<code>decreasing=FALSE</code>).</p>
+
+<pre class = 'prettyprint lang-r'>(randomLetters &lt;- sample(letters))</pre>
+
+<pre >##  [1] &quot;m&quot; &quot;r&quot; &quot;i&quot; &quot;q&quot; &quot;c&quot; &quot;y&quot; &quot;g&quot; &quot;p&quot; &quot;l&quot; &quot;z&quot; &quot;w&quot; &quot;n&quot; &quot;b&quot; &quot;k&quot; &quot;j&quot; &quot;d&quot; &quot;v&quot; &quot;x&quot; &quot;o&quot; &quot;t&quot; &quot;h&quot; &quot;s&quot; &quot;u&quot; &quot;a&quot;
+## [25] &quot;e&quot; &quot;f&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>randomLetters[order(randomLetters)]</pre>
+
+<pre >##  [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;f&quot; &quot;g&quot; &quot;h&quot; &quot;i&quot; &quot;j&quot; &quot;k&quot; &quot;l&quot; &quot;m&quot; &quot;n&quot; &quot;o&quot; &quot;p&quot; &quot;q&quot; &quot;r&quot; &quot;s&quot; &quot;t&quot; &quot;u&quot; &quot;v&quot; &quot;w&quot; &quot;x&quot;
+## [25] &quot;y&quot; &quot;z&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>randomLetters[order(randomLetters, decreasing=TRUE)]</pre>
+
+<pre >##  [1] &quot;z&quot; &quot;y&quot; &quot;x&quot; &quot;w&quot; &quot;v&quot; &quot;u&quot; &quot;t&quot; &quot;s&quot; &quot;r&quot; &quot;q&quot; &quot;p&quot; &quot;o&quot; &quot;n&quot; &quot;m&quot; &quot;l&quot; &quot;k&quot; &quot;j&quot; &quot;i&quot; &quot;h&quot; &quot;g&quot; &quot;f&quot; &quot;e&quot; &quot;d&quot; &quot;c&quot;
+## [25] &quot;b&quot; &quot;a&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Reshaping Data (melting)</h2></hgroup><article  id="reshaping-data-melting" class="smaller ">
+
+<p>Data is often said to be in one of two formats: wide or long. The <code>mass</code> data frame is currently in a wide format where each variable is a separate column. However, there are certain analyses that will require the data to be in a long format. In a long format, we would have two columns to represent all the items (one for the item name, one for value), plus any additional identity variables. The <code>melt</code> command will convert a wide table to a long table.</p>
+
+<pre class = 'prettyprint lang-r'>library(reshape2)
+mass$Id &lt;- 1:nrow(mass) # 59 rows
+mass.melted &lt;- melt(mass, id.vars=c(&#39;Id&#39;,&#39;Gender&#39;,&#39;Term&#39;), variable.name=&#39;Item&#39;, value.name=&#39;Response&#39;)
+head(mass.melted, n=4)</pre>
+
+<pre >##   Id Gender        Term Item Response
+## 1  1 Female Summer 2014   q1        2
+## 2  2 Female Summer 2014   q1        5
+## 3  3   Male Summer 2014   q1        5
+## 4  4 Female Summer 2014   q1        4</pre>
+
+<pre class = 'prettyprint lang-r'>nrow(mass.melted)</pre>
+
+<pre >## [1] 826</pre>
+
+</article></slide><slide class=''><hgroup><h2>Reshaping Data (casting)</h2></hgroup><article  id="reshaping-data-casting" class="smaller ">
+
+<p>To convert a long table to a wide table, use the <code>dcast</code> function</p>
+
+<pre class = 'prettyprint lang-r'>mass.casted &lt;- dcast(mass.melted, Id + Gender + Term  ~ Item, value.var=&#39;Response&#39;)
+head(mass.casted); nrow(mass.casted)</pre>
+
+<pre >##   Id Gender        Term q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13 q14
+## 1  1 Female Summer 2014  2  5  3  4  2  4  4  5  5   4   5   1   2   4
+## 2  2 Female Summer 2014  5  1  5  1  4  1  1  1  1   4   1   4   4   1
+## 3  3   Male Summer 2014  5  1  5  2  4  2  2  3  2   2   2   3   3   2
+## 4  4 Female Summer 2014  4  4  5  2  4  3  3  3  2   3   2   3   3   3
+## 5  5 Female Summer 2014  4  5  5  3  3  3  4  4  4   1   4   1   2   4
+## 6  6 Female Summer 2014  5  2  5  1  5  1  1  5  2   3   2   4   4   1</pre>
+
+<pre >## [1] 59</pre>
+
+</article></slide><slide class=''><hgroup><h2>Removing Columns</h2></hgroup><article  id="removing-columns" class="smaller ">
+
+<p>To remove a single column from a data frame, simply assign to <code>NULL</code> to the column value.</p>
+
+<pre class = 'prettyprint lang-r'>mass$Id &lt;- NULL
+head(mass)</pre>
+
+<pre >##   Gender q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13 q14        Term
+## 1 Female  2  5  3  4  2  4  4  5  5   4   5   1   2   4 Summer 2014
+## 2 Female  5  1  5  1  4  1  1  1  1   4   1   4   4   1 Summer 2014
+## 3   Male  5  1  5  2  4  2  2  3  2   2   2   3   3   2 Summer 2014
+## 4 Female  4  4  5  2  4  3  3  3  2   3   2   3   3   3 Summer 2014
+## 5 Female  4  5  5  3  3  3  4  4  4   1   4   1   2   4 Summer 2014
+## 6 Female  5  2  5  1  5  1  1  5  2   3   2   4   4   1 Summer 2014</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>if</code> Statements</h2></hgroup><article  id="if-statements" class="smaller ">
+
+<p><code>if</code> statements are a way of doing different operations conditionally. In this example, the <code>sample</code> function returns either a 0 or 1.</p>
+
+<pre class = 'prettyprint lang-r'>if(sample(c(0,1), 1) &gt; 0.5) {
+    print(&#39;heads&#39;)
+} else {
+    print(&#39;tails&#39;)
+}</pre>
+
+<pre >## [1] &quot;tails&quot;</pre>
+
+<p>For simpler problems, the <code>ifelse</code> function may be easier.</p>
+
+<pre class = 'prettyprint lang-r'>ifelse(sample(c(0,1), 1) &gt; 0.5, &#39;heads&#39;, &#39;tails&#39;)</pre>
+
+<pre >## [1] &quot;tails&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>for</code> loops</h2></hgroup><article  id="for-loops" class="smaller ">
+
+<p>The <code>for</code> loop allows you to do some operation a number of times. In this example, we wish to convert each of the Likert responses in the <code>mass</code> data frame to an ordered factor.</p>
+
+<pre class = 'prettyprint lang-r'>for(i in 2:15) {
+    mass[,i] &lt;- factor(mass[,i], levels=1:5, labels=c(&#39;Strongly Disagree&#39;, 
+            &#39;Disagree&#39;, &#39;Neutral&#39;, &#39;Agree&#39;, &#39;Strongly Agree&#39;), ordered=TRUE)
+}
+str(mass)</pre>
+
+<pre >## &#39;data.frame&#39;:    59 obs. of  16 variables:
+##  $ Gender: Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 1 1 2 1 1 1 1 1 1 1 ...
+##  $ q1    : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 2 5 5 4 4 5 4 4 5 1 ...
+##  $ q2    : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 5 1 1 4 5 2 2 4 4 5 ...
+##  $ q3    : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 3 5 5 5 5 5 5 5 5 3 ...
+##  $ q4    : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 4 1 2 2 3 1 1 3 2 5 ...
+##  $ q5    : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 2 4 4 4 3 5 5 4 2 2 ...
+##  $ q6    : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 4 1 2 3 3 1 2 5 4 5 ...
+##  $ q7    : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 4 1 2 3 4 1 1 4 4 5 ...
+##  $ q8    : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 5 1 3 3 4 5 3 5 4 5 ...
+##  $ q9    : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 5 1 2 2 4 2 1 4 4 5 ...
+##  $ q10   : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 4 4 2 3 1 3 2 3 3 1 ...
+##  $ q11   : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 5 1 2 2 4 2 1 4 4 5 ...
+##  $ q12   : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 1 4 3 3 1 4 4 2 3 1 ...
+##  $ q13   : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 2 4 3 3 2 4 4 3 3 1 ...
+##  $ q14   : Ord.factor w/ 5 levels &quot;Strongly Disagree&quot;&lt;..: 4 1 2 3 4 1 2 4 2 5 ...
+##  $ Term  : chr  &quot;Summer 2014&quot; &quot;Summer 2014&quot; &quot;Summer 2014&quot; &quot;Summer 2014&quot; ...</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>while</code> loops</h2></hgroup><article  id="while-loops" class="smaller ">
+
+<p><code>while</code> loops will run until some condition is met. In this example, consider 1=heads, 0=tails. How many random events would it take before getting 100 heads?</p>
+
+<pre class = 'prettyprint lang-r'>sum &lt;- 0
+count &lt;- 0
+while(sum &lt; 100) {
+    sum &lt;- sum + sample(c(0,1), 1)
+    count &lt;- count + 1
+}
+count # Number of loops until we got 100 head</pre>
+
+<pre >## [1] 213</pre>
+
+</article></slide><slide class=''><hgroup><h2>Functions</h2></hgroup><article  id="functions" class="smaller ">
+
+<p>Functions allow for organizing common procedures to easily be used later. You can specify any number of parameters with optional default values. The objects created and/or edited within the function are local to the function (i.e . not available to the calling environment). The <code>return</code> or <code>invisible</code> function is used to return value(s) to the environment calling the function. The <code>invisible</code> function will return a value but will not print it to the console if it is not assigned to an object.</p>
+
+<pre class = 'prettyprint lang-r'>getStanding &lt;- function(credits, 
+                        breaks=c(30, 60, 90),
+                        labels=c(&#39;Freshman&#39;,&#39;Sophomore&#39;, &#39;Junior&#39;, &#39;Senior&#39;)) {
+    results &lt;- cut(credits, breaks=c(-Inf, breaks, Inf), labels=labels, 
+                   include.lowest=TRUE, right=FALSE)
+    return(results)
+}
+getStanding(42)</pre>
+
+<pre >## [1] Sophomore
+## Levels: Freshman Sophomore Junior Senior</pre>
+
+<pre class = 'prettyprint lang-r'>getStanding(c(27, 60, 101, 200))</pre>
+
+<pre >## [1] Freshman Junior   Senior   Senior  
+## Levels: Freshman Sophomore Junior Senior</pre>
+
+</article></slide><slide class=''><hgroup><h2>Renaming Columns</h2></hgroup><article  id="renaming-columns" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>names(mass) # Get the current names</pre>
+
+<pre >##  [1] &quot;Gender&quot; &quot;q1&quot;     &quot;q2&quot;     &quot;q3&quot;     &quot;q4&quot;     &quot;q5&quot;     &quot;q6&quot;     &quot;q7&quot;     &quot;q8&quot;     &quot;q9&quot;    
+## [11] &quot;q10&quot;    &quot;q11&quot;    &quot;q12&quot;    &quot;q13&quot;    &quot;q14&quot;    &quot;Term&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>items &lt;- c(&#39;I find math interesting.&#39;,
+           &#39;I get uptight during math tests.&#39;,
+           &#39;I think that I will use math in the future.&#39;,
+           &#39;Mind goes blank and I am unable to think clearly when doing my math test.&#39;,
+           &#39;Math relates to my life.&#39;,
+           &#39;I worry about my ability to solve math problems.&#39;,
+           &#39;I get a sinking feeling when I try to do math problems.&#39;,
+           &#39;I find math challenging.&#39;,
+           &#39;Mathematics makes me feel nervous.&#39;,
+           &#39;I would like to take more math classes.&#39;,
+           &#39;Mathematics makes me feel uneasy.&#39;,
+           &#39;Math is one of my favorite subjects.&#39;,
+           &#39;I enjoy learning with mathematics.&#39;,
+           &#39;Mathematics makes me feel confused.&#39;)
+names(mass) &lt;- c(&#39;Gender&#39;, items, &#39;Term&#39;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Example: SAT and First Year Retention (subsetting)</h2></hgroup><article  id="example-sat-and-first-year-retention-subsetting" class="smaller ">
+
+<p>In this example, we wish to explore the relationship between SAT scores and first year retention as measures at the institutional level. These data are part of the IPEDS data collection, but are collected in different surveys. The first step is to subset the data frames so we are working with fewer columns. This is not necessary, but simplifies the analysis.</p>
+
+<pre class = 'prettyprint lang-r'>directory &lt;- directory[,c(&#39;unitid&#39;, &#39;instnm&#39;, &#39;sector&#39;, &#39;control&#39;)]
+retention &lt;- retention[,c(&#39;unitid&#39;, &#39;ret_pcf&#39;, &#39;ret_pcp&#39;)]
+admissions &lt;- admissions[,c(&#39;unitid&#39;, &#39;admcon1&#39;, &#39;admcon2&#39;, &#39;admcon7&#39;, &#39;applcnm&#39;, 
+                           &#39;applcnw&#39;, &#39;applcn&#39;, &#39;admssnm&#39;, &#39;admssnw&#39;, &#39;admssn&#39;, 
+                           &#39;enrlftm&#39;, &#39;enrlftw&#39;, &#39;enrlptm&#39;, &#39;enrlptw&#39;, &#39;enrlt&#39;, 
+                           &#39;satnum&#39;, &#39;satpct&#39;, &#39;actnum&#39;, &#39;actpct&#39;, &#39;satvr25&#39;, 
+                           &#39;satvr75&#39;, &#39;satmt25&#39;, &#39;satmt75&#39;, &#39;satwr25&#39;, &#39;satwr75&#39;, 
+                           &#39;actcm25&#39;, &#39;actcm75&#39;, &#39;acten25&#39;, &#39;acten75&#39;, &#39;actmt25&#39;, 
+                           &#39;actmt75&#39;, &#39;actwr25&#39;, &#39;actwr75&#39;)]</pre>
+
+</article></slide><slide class=''><hgroup><h2>Example: SAT and First Year Retention (converting factors)</h2></hgroup><article  id="example-sat-and-first-year-retention-converting-factors" class="smaller ">
+
+<p>Next, we will recode the variables that indicate whether SAT scores are required for admission.</p>
+
+<pre class = 'prettyprint lang-r'>admissionsLabels &lt;- c(&quot;Required&quot;, &quot;Recommended&quot;, &quot;Neither requiered nor recommended&quot;, 
+                     &quot;Do not know&quot;, &quot;Not reported&quot;, &quot;Not applicable&quot;)
+admissions$admcon1 &lt;- factor(admissions$admcon1, levels=c(1,2,3,4,-1,-2), 
+                            labels=admissionsLabels)
+admissions$admcon2 &lt;- factor(admissions$admcon2, levels=c(1,2,3,4,-1,-2), 
+                            labels=admissionsLabels)
+admissions$admcon7 &lt;- factor(admissions$admcon7, levels=c(1,2,3,4,-1,-2), 
+                            labels=admissionsLabels)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Example: SAT and First Year Retention (renaming variables)</h2></hgroup><article  id="example-sat-and-first-year-retention-renaming-variables" class="smaller ">
+
+<p>Next, rename the variables to more understandable names.</p>
+
+<pre class = 'prettyprint lang-r'>names(retention) &lt;- c(&quot;unitid&quot;, &quot;FullTimeRetentionRate&quot;, &quot;PartTimeRetentionRate&quot;)
+names(admissions) &lt;- c(&quot;unitid&quot;, &quot;UseHSGPA&quot;, &quot;UseHSRank&quot;, &quot;UseAdmissionTestScores&quot;, 
+                      &quot;ApplicantsMen&quot;, &quot;ApplicantsWomen&quot;, &quot;ApplicantsTotal&quot;, 
+                      &quot;AdmissionsMen&quot;, &quot;AdmissionsWomen&quot;, &quot;AdmissionsTotal&quot;, 
+                      &quot;EnrolledFullTimeMen&quot;, &quot;EnrolledFullTimeWomen&quot;, 
+                      &quot;EnrolledPartTimeMen&quot;, &quot;EnrolledPartTimeWomen&quot;, 
+                      &quot;EnrolledTotal&quot;, &quot;NumSATScores&quot;, &quot;PercentSATScores&quot;, 
+                      &quot;NumACTScores&quot;, &quot;PercentACTScores&quot;, &quot;SATReading25&quot;, 
+                      &quot;SATReading75&quot;, &quot;SATMath25&quot;, &quot;SATMath75&quot;, &quot;SATWriting25&quot;, 
+                      &quot;SATWriting75&quot;, &quot;ACTComposite25&quot;, &quot;ACTComposite75&quot;, 
+                      &quot;ACTEnglish25&quot;, &quot;ACTEnglish75&quot;, &quot;ACTMath25&quot;, &quot;ACTMath75&quot;, 
+                      &quot;ACTWriting25&quot;, &quot;ACTWriting75&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Example: SAT and First Year Retention (merging)</h2></hgroup><article  id="example-sat-and-first-year-retention-merging" class="smaller ">
+
+<p>We need to merge the three data frames to a single data frame. The <code>merge</code> function will merge, or join, two data frames on one or more columns. In this example schools that do not appear in all three data will not appear in the final data frame. To control how data frames are merge, see the <code>all</code>, <code>all.x</code>, and <code>all.y</code> parameters of the <code>merge</code> function (hint: works like outer joins in SQL).</p>
+
+<pre class = 'prettyprint lang-r'>ret &lt;- merge(directory, admissions, by=&quot;unitid&quot;)
+ret &lt;- merge(ret, retention, by=&quot;unitid&quot;)</pre>
+
+<p>We will also only use schools that require or recommend admission tests.</p>
+
+<pre class = 'prettyprint lang-r'>ret2 &lt;- ret[ret$UseAdmissionTestScores %in% 
+            c(&#39;Required&#39;, &#39;Recommended&#39;, &#39;Neither requiered nor recommended&#39;),] </pre>
+
+</article></slide><slide class=''><hgroup><h2>Example: SAT and First Year Retention (converting numeric columns)</h2></hgroup><article  id="example-sat-and-first-year-retention-converting-numeric-columns" class="smaller ">
+
+<p>IPEDS uses periods (<code>.</code>) to represent missing values. As a result, R will treat the column as a <code>character</code> column so we need to convert them to <code>numeric</code> columns. The <code>as.numeric</code> function will do this and any value that is not numeric (<code>.</code>s in this example) will be treated as missing values (i.e. <code>NA</code>).</p>
+
+<pre class = 'prettyprint lang-r'>ret2$SATMath75 &lt;- as.numeric(ret2$SATMath75)
+ret2$SATMath25 &lt;- as.numeric(ret2$SATMath25)
+ret2$SATWriting75 &lt;- as.numeric(ret2$SATWriting75)
+ret2$SATWriting25 &lt;- as.numeric(ret2$SATWriting25)
+ret2$NumSATScores &lt;- as.integer(ret2$NumSATScores)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Example: SAT and First Year Retention (calculating)</h2></hgroup><article  id="example-sat-and-first-year-retention-calculating" class="smaller ">
+
+<p>IPEDS only provides the 25th and 75th percentile in SAT and ACT scores. We will use the mean of these two values as a proxy for the mean.</p>
+
+<pre class = 'prettyprint lang-r'>ret2$SATMath &lt;- (ret2$SATMath75 + ret2$SATMath25) / 2
+ret2$SATWriting &lt;- (ret2$SATWriting75 + ret2$SATWriting25) / 2
+ret2$SATTotal &lt;- ret2$SATMath + ret2$SATWriting
+ret2$AcceptanceTotal &lt;- as.numeric(ret2$AdmissionsTotal) / as.numeric(ret2$ApplicantsTotal)
+ret2$UseAdmissionTestScores &lt;- as.factor(as.character(ret2$UseAdmissionTestScores))</pre>
+
+</article></slide><slide class=''><hgroup><h2>Example: SAT and First Year Retention (final data frame)</h2></hgroup><article  id="example-sat-and-first-year-retention-final-data-frame" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>str(ret2)</pre>
+
+<pre >## &#39;data.frame&#39;:    2281 obs. of  42 variables:
+##  $ unitid                : int  100654 100663 100706 100724 100751 100830 100858 100937 101116 101365 ...
+##  $ instnm                : chr  &quot;Alabama A &amp; M University&quot; &quot;University of Alabama at Birmingham&quot; &quot;University of Alabama in Huntsville&quot; &quot;Alabama State University&quot; ...
+##  $ sector                : int  1 1 1 1 1 1 1 2 3 3 ...
+##  $ control               : int  1 1 1 1 1 1 1 2 3 3 ...
+##  $ UseHSGPA              : Factor w/ 6 levels &quot;Required&quot;,&quot;Recommended&quot;,..: 1 1 1 2 1 2 1 1 3 3 ...
+##  $ UseHSRank             : Factor w/ 6 levels &quot;Required&quot;,&quot;Recommended&quot;,..: 2 3 2 3 2 2 2 1 3 3 ...
+##  $ UseAdmissionTestScores: Factor w/ 3 levels &quot;Neither requiered nor recommended&quot;,..: 3 3 3 3 3 2 3 3 2 2 ...
+##  $ ApplicantsMen         : chr  &quot;2401&quot; &quot;2214&quot; &quot;1183&quot; &quot;3808&quot; ...
+##  $ ApplicantsWomen       : chr  &quot;3741&quot; &quot;3475&quot; &quot;871&quot; &quot;6436&quot; ...
+##  $ ApplicantsTotal       : chr  &quot;6142&quot; &quot;5689&quot; &quot;2054&quot; &quot;10245&quot; ...
+##  $ AdmissionsMen         : chr  &quot;2100&quot; &quot;1944&quot; &quot;975&quot; &quot;1813&quot; ...
+##  $ AdmissionsWomen       : chr  &quot;3421&quot; &quot;2990&quot; &quot;681&quot; &quot;3438&quot; ...
+##  $ AdmissionsTotal       : chr  &quot;5521&quot; &quot;4934&quot; &quot;1656&quot; &quot;5251&quot; ...
+##  $ EnrolledFullTimeMen   : chr  &quot;533&quot; &quot;697&quot; &quot;387&quot; &quot;596&quot; ...
+##  $ EnrolledFullTimeWomen : chr  &quot;556&quot; &quot;1035&quot; &quot;251&quot; &quot;840&quot; ...
+##  $ EnrolledPartTimeMen   : chr  &quot;9&quot; &quot;20&quot; &quot;9&quot; &quot;24&quot; ...
+##  $ EnrolledPartTimeWomen : chr  &quot;6&quot; &quot;21&quot; &quot;4&quot; &quot;19&quot; ...
+##  $ EnrolledTotal         : chr  &quot;1104&quot; &quot;1773&quot; &quot;651&quot; &quot;1479&quot; ...
+##  $ NumSATScores          : int  167 103 118 269 1469 0 617 113 NA NA ...
+##  $ PercentSATScores      : chr  &quot;15&quot; &quot;6&quot; &quot;34&quot; &quot;18&quot; ...
+##  $ NumACTScores          : chr  &quot;968&quot; &quot;1645&quot; &quot;610&quot; &quot;1285&quot; ...
+##  $ PercentACTScores      : chr  &quot;88&quot; &quot;93&quot; &quot;94&quot; &quot;87&quot; ...
+##  $ SATReading25          : chr  &quot;370&quot; &quot;520&quot; &quot;510&quot; &quot;380&quot; ...
+##  $ SATReading75          : chr  &quot;450&quot; &quot;640&quot; &quot;640&quot; &quot;480&quot; ...
+##  $ SATMath25             : num  350 520 510 370 500 NA 540 520 NA NA ...
+##  $ SATMath75             : num  450 650 650 480 640 NA 650 640 NA NA ...
+##  $ SATWriting25          : num  NA NA NA NA 480 NA 510 NA NA NA ...
+##  $ SATWriting75          : num  NA NA NA NA 600 NA 620 NA NA NA ...
+##  $ ACTComposite25        : chr  &quot;15&quot; &quot;22&quot; &quot;23&quot; &quot;15&quot; ...
+##  $ ACTComposite75        : chr  &quot;19&quot; &quot;28&quot; &quot;29&quot; &quot;19&quot; ...
+##  $ ACTEnglish25          : chr  &quot;14&quot; &quot;22&quot; &quot;22&quot; &quot;14&quot; ...
+##  $ ACTEnglish75          : chr  &quot;19&quot; &quot;29&quot; &quot;30&quot; &quot;20&quot; ...
+##  $ ACTMath25             : chr  &quot;15&quot; &quot;20&quot; &quot;22&quot; &quot;15&quot; ...
+##  $ ACTMath75             : chr  &quot;18&quot; &quot;26&quot; &quot;28&quot; &quot;18&quot; ...
+##  $ ACTWriting25          : chr  &quot;.&quot; &quot;.&quot; &quot;.&quot; &quot;.&quot; ...
+##  $ ACTWriting75          : chr  &quot;.&quot; &quot;.&quot; &quot;.&quot; &quot;.&quot; ...
+##  $ FullTimeRetentionRate : int  63 80 81 62 87 63 89 80 19 50 ...
+##  $ PartTimeRetentionRate : int  50 50 44 30 66 45 85 NA 14 NA ...
+##  $ SATMath               : num  400 585 580 425 570 NA 595 580 NA NA ...
+##  $ SATWriting            : num  NA NA NA NA 540 NA 565 NA NA NA ...
+##  $ SATTotal              : num  NA NA NA NA 1110 NA 1160 NA NA NA ...
+##  $ AcceptanceTotal       : num  0.899 0.867 0.806 0.513 0.565 ...</pre>
+
+</article></slide><slide class=''><hgroup><h2>Miscellaneous Functions</h2></hgroup><article  id="miscellaneous-functions" class="smaller ">
+
+<ul>
+<li><code>paste</code> and <code>paste0</code> - concatenate strings (<code>paste0</code> uses <code>sep=&#39;&#39;</code> by default)</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>paste(&#39;Hello&#39;, &#39;NEAIR!&#39;)</pre>
+
+<pre >## [1] &quot;Hello NEAIR!&quot;</pre>
+
+<ul>
+<li><code>prettyNum</code> - Formats numbers to strings</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>prettyNum(123456.987654321, big.mark=&#39;,&#39;, digits=8)</pre>
+
+<pre >## [1] &quot;123,456.99&quot;</pre>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Statistics</h2></hgroup><article  id="statistics" class="smaller ">
+
+</article></slide><slide class=''><hgroup><h2>Descriptive Statistics</h2></hgroup><article  id="descriptive-statistics" class="smaller columns-2">
+
+<pre class = 'prettyprint lang-r'>mean(tutoring$Age)    # Mean</pre>
+
+<pre >## [1] 36.92382</pre>
+
+<pre class = 'prettyprint lang-r'>median(tutoring$Age)  # Median</pre>
+
+<pre >## [1] 37</pre>
+
+<pre class = 'prettyprint lang-r'>var(tutoring$Age)     # Variance</pre>
+
+<pre >## [1] 81.86711</pre>
+
+<pre class = 'prettyprint lang-r'>sd(tutoring$Age)      # Standard deviation</pre>
+
+<pre >## [1] 9.048045</pre>
+
+<pre class = 'prettyprint lang-r'>IQR(tutoring$Age)     # Inter-quartile range</pre>
+
+<pre >## [1] 13</pre>
+
+<pre class = 'prettyprint lang-r'>min(tutoring$Age)     # Minimum value</pre>
+
+<pre >## [1] 20</pre>
+
+<pre class = 'prettyprint lang-r'>max(tutoring$Age)     # Maximum value</pre>
+
+<pre >## [1] 65</pre>
+
+<pre class = 'prettyprint lang-r'>summary(tutoring$Age) # All at once</pre>
+
+<pre >##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   20.00   30.00   37.00   36.92   43.00   65.00</pre>
+
+</article></slide><slide class=''><hgroup><h2>The <code>describe</code> and <code>describeBy</code> Functions</h2></hgroup><article  id="the-describe-and-describeby-functions" class="smaller ">
+
+<p>The <code>describe</code> and <code>describeBy</code> functions in the <code>psych</code> package are useful for calculating descriptive statistics across many variables.</p>
+
+<pre class = 'prettyprint lang-r'>library(psych)
+describe(tutoring$Age)</pre>
+
+<pre >##    vars    n  mean   sd median trimmed   mad min max range skew kurtosis   se
+## X1    1 1142 36.92 9.05     37   36.51 10.38  20  65    45 0.36    -0.49 0.27</pre>
+
+<pre class = 'prettyprint lang-r'>describeBy(tutoring$Age, tutoring$Military, mat=TRUE)</pre>
+
+<pre >##     item group1 vars   n     mean       sd median  trimmed     mad min max range      skew
+## X11    1  FALSE    1 783 38.42529 9.472897     38 38.15470 10.3782  20  65    45 0.2089516
+## X12    2   TRUE    1 359 33.64903 7.015899     33 33.40484  7.4130  21  53    32 0.2938581
+##       kurtosis        se
+## X11 -0.6754505 0.3385337
+## X12 -0.5781302 0.3702850</pre>
+
+<p>The <code>mat=TRUE</code> parameter presents the results in tabular format that is useful for later converting to a document or report.</p>
+
+</article></slide><slide class=''><hgroup><h2>Contingency and Proportion Tables</h2></hgroup><article  id="contingency-and-proportion-tables" class="smaller columns-2">
+
+<pre class = 'prettyprint lang-r'>(tab1 &lt;- table(tutoring$Military, useNA=&#39;ifany&#39;))</pre>
+
+<pre >## 
+## FALSE  TRUE 
+##   783   359</pre>
+
+<pre class = 'prettyprint lang-r'>(tab2 &lt;- table(tutoring$Military, tutoring$treat, 
+               useNA=&#39;ifany&#39;))</pre>
+
+<pre >##        
+##         Control Treat1 Treat2
+##   FALSE     609    102     72
+##   TRUE      309     32     18</pre>
+
+<pre class = 'prettyprint lang-r'>prop.table(tab1)</pre>
+
+<pre >## 
+##     FALSE      TRUE 
+## 0.6856392 0.3143608</pre>
+
+<pre class = 'prettyprint lang-r'>prop.table(tab2)    # Sum of all cells = 1</pre>
+
+<pre >##        
+##            Control     Treat1     Treat2
+##   FALSE 0.53327496 0.08931699 0.06304729
+##   TRUE  0.27057793 0.02802102 0.01576182</pre>
+
+<pre class = 'prettyprint lang-r'>prop.table(tab2, 1) # Sum of rows = 1</pre>
+
+<pre >##        
+##            Control     Treat1     Treat2
+##   FALSE 0.77777778 0.13026820 0.09195402
+##   TRUE  0.86072423 0.08913649 0.05013928</pre>
+
+<pre class = 'prettyprint lang-r'>prop.table(tab2, 2) # Sum of columns = 1</pre>
+
+<pre >##        
+##           Control    Treat1    Treat2
+##   FALSE 0.6633987 0.7611940 0.8000000
+##   TRUE  0.3366013 0.2388060 0.2000000</pre>
+
+</article></slide><slide class=''><hgroup><h2>Correlation</h2></hgroup><article  id="correlation" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>cor(ret2$SATMath, ret2$FullTimeRetentionRate, use=&#39;complete.obs&#39;)</pre>
+
+<pre >## [1] 0.7320969</pre>
+
+<pre class = 'prettyprint lang-r'>cor.test(ret2$SATMath, ret2$FullTimeRetentionRate, use=&#39;complete.obs&#39;)</pre>
+
+<pre >## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  ret2$SATMath and ret2$FullTimeRetentionRate
+## t = 38.987, df = 1316, p-value &lt; 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.7060096 0.7562001
+## sample estimates:
+##       cor 
+## 0.7320969</pre>
+
+</article></slide><slide class=''><hgroup><h2>t-tests</h2></hgroup><article  id="t-tests" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>t.test(Grade ~ treat2, data=tutoring)</pre>
+
+<pre >## 
+##  Welch Two Sample t-test
+## 
+## data:  Grade by treat2
+## t = -6.3194, df = 550.26, p-value = 5.427e-10
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.6720933 -0.3533502
+## sample estimates:
+## mean in group FALSE  mean in group TRUE 
+##            2.790850            3.303571</pre>
+
+</article></slide><slide class=''><hgroup><h2>Regression</h2></hgroup><article  id="regression" class="smaller ">
+
+<p>The <code>lm</code> and <code>glm</code> functions are used for linear models and generalized linear models, respectively. The following example is a multiple regression model predicting <code>FullTimeRetentionRate</code> from <code>SATWriting</code>, <code>SATMath</code>, <code>AcceptanceTotal</code>, and <code>UseAdmissionTestScores</code>.</p>
+
+<pre class = 'prettyprint lang-r'>lm.fit &lt;- lm(FullTimeRetentionRate ~ SATWriting + SATMath + AcceptanceTotal + 
+            UseAdmissionTestScores, data=ret2, weights=ret2$NumSATScores)
+summary(lm.fit)</pre>
+
+<pre >## 
+## Call:
+## lm(formula = FullTimeRetentionRate ~ SATWriting + SATMath + AcceptanceTotal + 
+##     UseAdmissionTestScores, data = ret2, weights = ret2$NumSATScores)
+## 
+## Weighted Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -904.06  -72.28  -16.70   42.73  632.65 
+## 
+## Coefficients:
+##                                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                       13.127102   3.499094   3.752 0.000189 ***
+## SATWriting                         0.037229   0.010084   3.692 0.000238 ***
+## SATMath                            0.085770   0.009421   9.104  &lt; 2e-16 ***
+## AcceptanceTotal                    4.947624   1.394498   3.548 0.000411 ***
+## UseAdmissionTestScoresRecommended -4.236870   2.271028  -1.866 0.062465 .  
+## UseAdmissionTestScoresRequired    -2.394511   2.116747  -1.131 0.258305    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 133.1 on 790 degrees of freedom
+##   (1485 observations deleted due to missingness)
+## Multiple R-squared:  0.7461, Adjusted R-squared:  0.7445 
+## F-statistic: 464.2 on 5 and 790 DF,  p-value: &lt; 2.2e-16</pre>
+
+<p>See <a href='https://htmlpreview.github.io/?https://raw.githubusercontent.com/jbryer/EPSY530Summer2015/master/Slides/LinearRegressionNYSRC.html' title=''>Linear Regression with NYS Report Card</a> for more linear regression.</p>
+
+</article></slide><slide class=''><hgroup><h2>Your turn!</h2></hgroup><article  id="your-turn-2" class="smaller ">
+
+<p>Complete the Transfrom section of <code>Workshop.Rmd</code>.</p>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Data Visualization</h2></hgroup><article  id="data-visualization" class="smaller ">
+
+</article></slide><slide class=''><hgroup><h2>Histograms</h2></hgroup><article  id="histograms" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>hist(tutoring$Age)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-74-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Boxplots</h2></hgroup><article  id="boxplots" class="smaller columns-2">
+
+<pre class = 'prettyprint lang-r'>boxplot(tutoring$Age)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-75-1.png' title=''/>
+
+<pre class = 'prettyprint lang-r'>boxplot(Age ~ Military, data=tutoring)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-76-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Barplots</h2></hgroup><article  id="barplots" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>barplot(table(tutoring$Ethnicity))</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-77-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Scatter Plots</h2></hgroup><article  id="scatter-plots" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>plot(ret2$SATMath, ret2$FullTimeRetentionRate)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-78-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Gammar of Graphics with <code>ggplot2</code></h2></hgroup><article  id="gammar-of-graphics-with-ggplot2" class="smaller ">
+
+<ul>
+<li><code>ggplot2</code> is an R package that provides an alternative framework based upon Wilkinson’s (2005) Grammar of Graphics.</li>
+<li><code>ggplot2</code> is, in general, more flexible for creating &quot;prettier&quot; and complex plots.</li>
+<li>Works by creating layers of different types of objects/geometries (i.e. bars, points, lines, polygons, etc.) <code>ggplot2</code> has at least three ways of creating plots:
+
+<ol>
+<li><code>qplot</code></li>
+<li><code>ggplot(...) + geom_XXX(...) + ...</code></li>
+<li><code>ggplot(...) + layer(...)</code></li>
+</ol></li>
+<li>We will focus only on the second.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>First Example</h2></hgroup><article  id="first-example" class="smaller flexbox vcenter">
+
+<pre class = 'prettyprint lang-r'>data(diamonds)
+ggplot(diamonds, aes(x=carat, y=price, color=cut)) + geom_point()</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-79-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Parts of a <code>ggplot2</code> Statement</h2></hgroup><article  id="parts-of-a-ggplot2-statement" class="smaller ">
+
+<ul class = 'build'>
+<li>Data<br/><code>ggplot(myDataFrame, aes(x=x, y=y)</code></li>
+<li>Layers<br/><code>geom_point()</code>, <code>geom_histogram()</code></li>
+<li>Facets<br/><code>facet_wrap(~ cut)</code>, <code>facet_grid(~ cut)</code></li>
+<li>Scales<br/><code>scale_y_log10()</code></li>
+<li>Other options<br/><code>ggtitle(&#39;my title&#39;)</code>, <code>ylim(c(0, 10000))</code>, <code>xlab(&#39;x-axis label&#39;)</code></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Lots of geoms</h2></hgroup><article  id="lots-of-geoms" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>ls(&#39;package:ggplot2&#39;)[grep(&#39;geom_&#39;, ls(&#39;package:ggplot2&#39;))]</pre>
+
+<pre >##  [1] &quot;geom_abline&quot;          &quot;geom_area&quot;            &quot;geom_bar&quot;             &quot;geom_bin2d&quot;          
+##  [5] &quot;geom_blank&quot;           &quot;geom_boxplot&quot;         &quot;geom_contour&quot;         &quot;geom_count&quot;          
+##  [9] &quot;geom_crossbar&quot;        &quot;geom_curve&quot;           &quot;geom_density&quot;         &quot;geom_density_2d&quot;     
+## [13] &quot;geom_density2d&quot;       &quot;geom_dotplot&quot;         &quot;geom_errorbar&quot;        &quot;geom_errorbarh&quot;      
+## [17] &quot;geom_freqpoly&quot;        &quot;geom_hex&quot;             &quot;geom_histogram&quot;       &quot;geom_hline&quot;          
+## [21] &quot;geom_jitter&quot;          &quot;geom_label&quot;           &quot;geom_line&quot;            &quot;geom_linerange&quot;      
+## [25] &quot;geom_map&quot;             &quot;geom_path&quot;            &quot;geom_point&quot;           &quot;geom_pointrange&quot;     
+## [29] &quot;geom_polygon&quot;         &quot;geom_qq&quot;              &quot;geom_quantile&quot;        &quot;geom_raster&quot;         
+## [33] &quot;geom_rect&quot;            &quot;geom_ribbon&quot;          &quot;geom_rug&quot;             &quot;geom_segment&quot;        
+## [37] &quot;geom_smooth&quot;          &quot;geom_spoke&quot;           &quot;geom_step&quot;            &quot;geom_text&quot;           
+## [41] &quot;geom_tile&quot;            &quot;geom_violin&quot;          &quot;geom_vline&quot;           &quot;update_geom_defaults&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Histograms</h2></hgroup><article  id="histograms-1" class="smaller flexbox vcenter">
+
+<pre class = 'prettyprint lang-r'>ggplot(tutoring, aes(x=Age)) + geom_histogram(binwidth=5)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-81-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Density Plots</h2></hgroup><article  id="density-plots" class="smaller flexbox vcenter">
+
+<pre class = 'prettyprint lang-r'>ggplot(tutoring, aes(x=Age)) + geom_density()</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-82-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Boxplots</h2></hgroup><article  id="boxplots-1" class="smaller flexbox vcenter">
+
+<pre class = 'prettyprint lang-r'>ggplot(tutoring, aes(x=Military, y=Age)) + geom_boxplot()</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-83-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Barplots</h2></hgroup><article  id="barplots-1" class="smaller flexbox vcenter">
+
+<pre class = 'prettyprint lang-r'>ggplot(tutoring, aes(x=Ethnicity)) + geom_bar()</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-84-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Example: SAT and First Year Retention</h2></hgroup><article  id="example-sat-and-first-year-retention" class="smaller build">
+
+<p>First, we define the data and aesthetics (i.e. the various components for the graph). Here, SAT math scores will be on the x-axis, full-time retention rates on the y-axis. Points will be sized based upon the number of SAT scores included. The color will represent whether admission test scores are required, recommended, or neither required nor recommended.</p>
+
+<pre class = 'prettyprint lang-r'>p &lt;- ggplot(ret2, aes(x=SATMath, y=FullTimeRetentionRate, size=NumSATScores,
+                 color=UseAdmissionTestScores))</pre>
+
+<p>Next, we define the graphic objects (i.e. <code>geom</code>s) to add to the figure.</p>
+
+<pre class = 'prettyprint lang-r'>p &lt;- p + geom_point()</pre>
+
+<p>We can override the default color scheme for the points (note the default is <code>scale_color_hue</code>).</p>
+
+<pre class = 'prettyprint lang-r'>p &lt;- p + scale_color_brewer(&#39;Test Required for Admissions&#39;, type=&#39;qual&#39;)</pre>
+
+<p>Lastly, we will add axis labels and a title.</p>
+
+<pre class = 'prettyprint lang-r'>p &lt;- p + xlab(&#39;SAT Math Score&#39;) + ylab(&#39;Full Time Retention Rate&#39;) +
+    ggtitle(&#39;SAT and Full Time Retention&#39;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Example: SAT and First Year Retention</h2></hgroup><article  id="example-sat-and-first-year-retention-1" class="smaller flexbox vcenter">
+
+<img src='IntroR_files/figure-html/unnamed-chunk-89-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Example: SAT and First Year Retention</h2></hgroup><article  id="example-sat-and-first-year-retention-2" class="smaller flexbox vcenter">
+
+<p>We can easily add additional geoms, here adding a Loess regression line.</p>
+
+<pre class = 'prettyprint lang-r'>p + geom_smooth(method=&#39;loess&#39;)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-90-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Likert Type Items</h2></hgroup><article  id="likert-type-items" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>library(likert)
+l &lt;- likert(mass[,2:15])
+summary(l)</pre>
+
+<pre >##                                                                         Item low neutral high mean
+## 3                                I think that I will use math in the future.   0      20   80 4.35
+## 8                                                   I find math challenging.  15      15   70 3.75
+## 1                                                   I find math interesting.  25      10   65 3.60
+## 5                                                   Math relates to my life.  25      10   65 3.60
+## 2                                           I get uptight during math tests.  30      20   50 3.35
+## 14                                       Mathematics makes me feel confused.  35      15   50 3.15
+## 6                           I worry about my ability to solve math problems.  40      20   40 2.90
+## 7                    I get a sinking feeling when I try to do math problems.  45      15   40 2.65
+## 9                                         Mathematics makes me feel nervous.  45      15   40 2.90
+## 11                                         Mathematics makes me feel uneasy.  40      20   40 2.90
+## 13                                        I enjoy learning with mathematics.  40      30   30 2.85
+## 4  Mind goes blank and I am unable to think clearly when doing my math test.  60      15   25 2.50
+## 10                                   I would like to take more math classes.  45      30   25 2.65
+## 12                                      Math is one of my favorite subjects.  50      25   25 2.45
+##           sd
+## 3  0.8127277
+## 8  1.1180340
+## 1  1.3533584
+## 5  1.2311740
+## 2  1.3484884
+## 14 1.3484884
+## 6  1.3337719
+## 7  1.4244112
+## 9  1.4104870
+## 11 1.4473206
+## 13 1.2258187
+## 4  1.4327008
+## 10 1.1821034
+## 12 1.3168943</pre>
+
+</article></slide><slide class=''><hgroup><h2>Likert Bar Plot</h2></hgroup><article  id="likert-bar-plot" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>plot(l)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-93-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Likert Bar Plot</h2></hgroup><article  id="likert-bar-plot-1" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>plot(l, include.histogram=TRUE)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-94-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Likert Heat Plot</h2></hgroup><article  id="likert-heat-plot" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>plot(l, type=&#39;heat&#39;)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-95-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Likert Density Plot {.flexbox vcenter}</h2></hgroup><article  id="likert-density-plot-.flexbox-vcenter" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>plot(likert(mass[,2:6]), type=&#39;density&#39;)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-96-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Grouped Likert Analysis</h2></hgroup><article  id="grouped-likert-analysis" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>lg &lt;- likert(mass[,2:6], grouping = mass$Gender)
+summary(lg)</pre>
+
+<pre >##     Group                                                                      Item      low
+## 1  Female                                                  I find math interesting. 28.57143
+## 2  Female                                          I get uptight during math tests. 28.57143
+## 3  Female                               I think that I will use math in the future. 42.85714
+## 4  Female Mind goes blank and I am unable to think clearly when doing my math test. 50.00000
+## 5  Female                                                  Math relates to my life. 35.71429
+## 6    Male                                                  I find math interesting. 16.66667
+## 7    Male                                          I get uptight during math tests. 33.33333
+## 8    Male                               I think that I will use math in the future. 50.00000
+## 9    Male Mind goes blank and I am unable to think clearly when doing my math test. 83.33333
+## 10   Male                                                  Math relates to my life.  0.00000
+##     neutral      high     mean        sd
+## 1  14.28571  57.14286 3.357143 1.3926810
+## 2   0.00000  71.42857 3.714286 1.3827827
+## 3  57.14286   0.00000 4.285714 0.9138735
+## 4  21.42857  28.57143 2.785714 1.4769288
+## 5  14.28571  50.00000 3.285714 1.3259871
+## 6   0.00000  83.33333 4.166667 1.1690452
+## 7  66.66667   0.00000 2.500000 0.8366600
+## 8  50.00000   0.00000 4.500000 0.5477226
+## 9   0.00000  16.66667 1.833333 1.1690452
+## 10  0.00000 100.00000 4.333333 0.5163978</pre>
+
+</article></slide><slide class=''><hgroup><h2>Grouped Likert Bar Plot</h2></hgroup><article  id="grouped-likert-bar-plot" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>plot(lg)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-98-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Pairs Plot</h2></hgroup><article  id="pairs-plot" class="smaller flexbox vcenter">
+
+<pre class = 'prettyprint lang-r'>pairs(mass[,2:6], panel=panel.smooth, diag.panel=panel.hist, upper.panel=panel.cor)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-100-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Your turn!</h2></hgroup><article  id="your-turn-3" class="smaller ">
+
+<p>Complete the Visualize section of <code>Workshop.Rmd</code>.</p>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Document Preparation</h2></hgroup><article  id="document-preparation" class="smaller ">
+
+</article></slide><slide class=''><hgroup><h2>Markdown</h2></hgroup><article  id="markdown" class="smaller ">
+
+<p>Markdown is a plan text format designed primarily to be converted to HTML documents. However, with the development of <a href='http://pandoc.org/' title=''>Pandoc</a>, markdown has become popular for generating lots of other document formats including PDF, Word, and presentations (this presentation is, in fact, written in markdown).</p>
+
+<p>The goal of markdown is for the source file (in plain text) to be readable without converting to the desired output format.</p>
+
+<pre ># Level 1 Header  
+## Level 2 Header
+### Level 3 Header
+#### Level 4 Header
+##### Level 5 Header</pre>
+
+<p>One asterisk around a word or phrase will put it in <em>italics</em>, two will make it <strong>bold</strong>.</p>
+
+<p>Images</p>
+
+<p>Links</p>
+
+<p>See <a href='https://daringfireball.net/projects/markdown/' title=''>https://daringfireball.net/projects/markdown/</a> for more on Markdown.</p>
+
+</article></slide><slide class=''><hgroup><h2>R Markdown</h2></hgroup><article  id="r-markdown" class="smaller ">
+
+<p>R markdown extends markdown by allowing for embedding R code and output directly within your document.</p>
+
+<pre class='prettyprint lang-r'>
+```{r Label, options}  
+2 + 2
+```
+</pre>
+
+<p>R code can also be included inline by placing commands between <code>` r</code> and <code>`</code> (note: not space between the opening tickmark and <code>r</code>).</p>
+
+<pre class='prettyprint lang-r'>
+A total of ` r nrow(mass)` students responded to the survey.
+</pre>
+
+<p>A total of 20 students responded to the survey.</p>
+
+<p>See <a href='https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf' title=''>https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf</a> for a cheat sheet on markdown and R markdown.</p>
+
+</article></slide><slide class=''><hgroup><h2>Chunk Options</h2></hgroup><article  id="chunk-options" class="smaller ">
+
+<ul>
+<li><code>eval</code> (<code>TRUE</code> or <code>FALSE</code>) - whether the chunk is executed.</li>
+<li><code>echo</code> (<code>TRUE</code> or <code>FALSE</code>) - whether the source code is copied into the final document.</li>
+<li><code>message</code> (<code>TRUE</code> or <code>FALSE</code>) - whether messages are included in the final document.</li>
+<li><code>warning</code> (<code>TRUE</code> or <code>FALSE</code>) - whether warning messages are included in the final document.</li>
+<li><code>results</code> (<code>asis</code>, <code>hide</code>) - how the output should be included.</li>
+<li><code>fig.width</code> - the width of any figures from the code chunk.</li>
+<li><code>fig.height</code> - the height of any figures from the code chunk.</li>
+<li><code>cache</code> - whether the R chunk should be cached and only updated if changed. Useful if the chunk takes a significant amount of time to run.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Tables</h2></hgroup><article  id="tables" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>library(knitr)
+tab &lt;- describeBy(tutoring$Grade, group=tutoring$treat, mat=TRUE, skew=TRUE)
+tab &lt;- tab[,c(&#39;group1&#39;, &#39;n&#39;, &#39;mean&#39;, &#39;sd&#39;, &#39;median&#39;)]
+names(tab) &lt;- c(&#39;Treatment&#39;, &#39;n&#39;, &#39;Mean&#39;, &#39;Standard Deviation&#39;, &#39;Median&#39;)
+kable(tab, row.names=FALSE, digits=3, caption=&#39;Descriptive Statistics for Grade by Treatment&#39;)</pre>
+
+<table class = 'rmdtable'>
+<caption>Descriptive Statistics for Grade by Treatment</caption>
+<tr class="header">
+<th align="left">Treatment</th>
+<th align="right">n</th>
+<th align="right">Mean</th>
+<th align="right">Standard Deviation</th>
+<th align="right">Median</th>
+</tr>
+<tr class="odd">
+<td align="left">Control</td>
+<td align="right">918</td>
+<td align="right">2.791</td>
+<td align="right">1.543</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Treat1</td>
+<td align="right">134</td>
+<td align="right">3.179</td>
+<td align="right">1.003</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Treat2</td>
+<td align="right">90</td>
+<td align="right">3.489</td>
+<td align="right">0.824</td>
+<td align="right">4</td>
+</tr>
+</table>
+
+</article></slide><slide class=''><hgroup><h2>Math Equations</h2></hgroup><article  id="math-equations" class="smaller ">
+
+<p><img src='DaumScreen.png' width='600' alt='Daum Editor Screenshot' align='right'></p>
+
+<p>R Markdown uses <a href='https://www.mathjax.org/' title=''>MathJax</a> to display math equations. MathJax is an open source JavaScript library that converts LaTeX style equations to HTML. Thanks to Daum Equation Editor available as a <a href='https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0CB4QFjAAahUKEwifg8qolurIAhXI6CYKHWqzBUE&amp;url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fdaum-equation-editor%2Fdinfmiceliiomokeofbocegmacmagjhe%3Fhl%3Den&amp;usg=AFQjCNHN4YwIK4t7cZnjtAURGPzFadCONQ&amp;sig2=Lvsf0JzDQFCECAoMIYIo8A' title=''>Google Chrome Extension</a> or as a <a href='https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=3&amp;cad=rja&amp;uact=8&amp;ved=0CDAQFjACahUKEwifg8qolurIAhXI6CYKHWqzBUE&amp;url=https%3A%2F%2Fitunes.apple.com%2Fus%2Fapp%2Fdaum-equation-editor%2Fid540665783%3Fmt%3D12&amp;usg=AFQjCNH69beGYAfr5ojnPILLNOG-goN9sw&amp;sig2=MwUV_3iF8zb0BQDNL7sBgQ' title=''>Mac Application</a>, creating equations is relatively simply using a graphical user interface. Math equations are surrounded by one dollar sign for inline equations or two dollar signs for centered equations.</p>
+
+<p><br/><br/></p>
+
+<pre class='prettyprint lang-r'>
+```
+$$ { e }^{ i\pi  }+1=0 $$
+```
+</pre>
+
+<p>\[ { e }^{ i\pi  }+1=0 \]</p>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Advanced Statistics and Predictive Modeling</h2></hgroup><article  id="advanced-statistics-and-predictive-modeling" class="smaller ">
+
+</article></slide><slide class=''><hgroup><h2>Affairs Data</h2></hgroup><article  id="affairs-data" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>library(AER)
+library(party)
+library(randomForest)
+library(ROCR)
+
+data(Affairs)
+str(Affairs)</pre>
+
+<pre >## &#39;data.frame&#39;:    601 obs. of  9 variables:
+##  $ affairs      : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ gender       : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 2 1 1 2 2 1 1 2 1 2 ...
+##  $ age          : num  37 27 32 57 22 32 22 57 32 22 ...
+##  $ yearsmarried : num  10 4 15 15 0.75 1.5 0.75 15 15 1.5 ...
+##  $ children     : Factor w/ 2 levels &quot;no&quot;,&quot;yes&quot;: 1 1 2 2 1 1 1 2 2 1 ...
+##  $ religiousness: int  3 4 1 5 2 2 2 2 4 4 ...
+##  $ education    : num  18 14 12 18 17 17 12 14 16 14 ...
+##  $ occupation   : int  7 6 1 6 6 5 1 4 1 4 ...
+##  $ rating       : int  4 4 4 5 3 5 3 4 2 5 ...</pre>
+
+<p><font size='-1'> Fair, R.C. (1978). A Theory of Extramarital Affairs. <em>Journal of Political Economy, 86</em>, 45–61. </font></p>
+
+</article></slide><slide class=''><hgroup><h2>Affairs Data (cont.)</h2></hgroup><article  id="affairs-data-cont." class="smaller ">
+
+<ul>
+<li><strong>affairs</strong> - How often engaged in extramarital sexual intercourse during the past year?</li>
+<li><strong>gender</strong> - factor indicating gender.</li>
+<li><strong>age</strong> - numeric variable coding age in years: 17.5 = under 20, 22 = 20–24, 27 = 25–29, 32 = 30–34, 37 = 35–39, 42 = 40–44, 47 = 45–49, 52 = 50–54, 57 = 55 or over.</li>
+<li><strong>yearsmarried</strong> - numeric variable coding number of years married: 0.125 = 3 months or less, 0.417 = 4–6 months, 0.75 = 6 months–1 year, 1.5 = 1–2 years, 4 = 3–5 years, 7 = 6–8 years, 10 = 9–11 years, 15 = 12 or more years.</li>
+<li><strong>children</strong> - Are there children in the marriage?</li>
+<li><strong>religiousness</strong> - numeric variable coding religiousness: 1 = anti, 2 = not at all, 3 = slightly, 4 = somewhat, 5 = very.</li>
+<li><strong>education</strong> - numeric variable coding level of education: 9 = grade school, 12 = high school graduate, 14 = some college, 16 = college graduate, 17 = some graduate work, 18 = master&#39;s degree, 20 = Ph.D., M.D., or other advanced degree.</li>
+<li><strong>occupation</strong> - numeric variable coding occupation according to Hollingshead classification (reverse numbering).</li>
+<li><strong>rating</strong> - numeric variable coding self rating of marriage: 1 = very unhappy, 2 = somewhat unhappy, 3 = average, 4 = happier than average, 5 = very happy.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Data and Model Preparation</h2></hgroup><article  id="data-and-model-preparation" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>Affairs$HadAffair &lt;- Affairs$affairs &gt; 0
+
+train &lt;- sample(nrow(Affairs), nrow(Affairs) / 2)
+affairs.train &lt;- Affairs[train,]
+affairs.valid &lt;- Affairs[-train,]
+
+formu &lt;- HadAffair ~ gender + age + yearsmarried + children + 
+    religiousness + education + occupation + rating</pre>
+
+</article></slide><slide class=''><hgroup><h2>Logsitic Regression</h2></hgroup><article  id="logsitic-regression" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>lr.out &lt;- glm(formu, data=affairs.train, family=binomial())
+summary(lr.out)</pre>
+
+<pre >## 
+## Call:
+## glm(formula = formu, family = binomial(), data = affairs.train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.3925  -0.7357  -0.5349  -0.2834   2.4298  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)    2.92232    1.33559   2.188 0.028667 *  
+## gendermale     0.66772    0.34642   1.927 0.053921 .  
+## age           -0.06547    0.02727  -2.401 0.016357 *  
+## yearsmarried   0.16926    0.04767   3.551 0.000384 ***
+## childrenyes   -0.48637    0.41742  -1.165 0.243947    
+## religiousness -0.38367    0.13195  -2.908 0.003641 ** 
+## education     -0.03138    0.07568  -0.415 0.678352    
+## occupation     0.01380    0.10675   0.129 0.897153    
+## rating        -0.46011    0.13374  -3.440 0.000581 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 335.19  on 299  degrees of freedom
+## Residual deviance: 296.05  on 291  degrees of freedom
+## AIC: 314.05
+## 
+## Number of Fisher Scoring iterations: 4</pre>
+
+<pre class = 'prettyprint lang-r'>train.out &lt;- fitted(lr.out)
+head(train.out)</pre>
+
+<pre >##       645      1685      9012      1726       735      1573 
+## 0.2606440 0.2716928 0.5508259 0.1885330 0.4659040 0.1670437</pre>
+
+<pre class = 'prettyprint lang-r'>valid.out &lt;- predict(lr.out, newdata=affairs.valid, type=&#39;response&#39;)
+head(valid.out)</pre>
+
+<pre >##         5        23        44        45        50        64 
+## 0.1300914 0.4202230 0.2887123 0.2532270 0.7313187 0.1618834</pre>
+
+</article></slide><slide class=''><hgroup><h2>Receiver Operating Characteristic (ROC) Curve</h2></hgroup><article  id="receiver-operating-characteristic-roc-curve" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>pred &lt;- prediction(valid.out, affairs.valid$HadAffair)
+perf &lt;- performance(pred, measure = &quot;tpr&quot;, x.measure = &quot;fpr&quot;) 
+plot(perf, col=rainbow(10)); abline(0, 1)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-105-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Confusion matrix and model accuracy</h2></hgroup><article  id="confusion-matrix-and-model-accuracy" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>table(&#39;Prediction&#39;=valid.out &gt; median(valid.out), &#39;Actual&#39;=affairs.valid$HadAffair) %&gt;% 
+    print %&gt;% prop.table %&gt;% diag %&gt;% sum %&gt;% print</pre>
+
+<pre >##           Actual
+## Prediction FALSE TRUE
+##      FALSE   126   25
+##      TRUE     99   51
+## [1] 0.5880399</pre>
+
+</article></slide><slide class=''><hgroup><h2>Decision Trees</h2></hgroup><article  id="decision-trees" class="smaller flexbox vcenter">
+
+<pre class = 'prettyprint lang-r'>library(rpart)
+rpart.out &lt;- rpart(formu, data=affairs.train)
+plot(rpart.out); text(rpart.out)</pre>
+
+<img src='IntroR_files/figure-html/unnamed-chunk-108-1.png' title=''/>
+
+</article></slide><slide class=''><hgroup><h2>Decision Trees (cont.)</h2></hgroup><article  id="decision-trees-cont." class="smaller ">
+
+<pre class = 'prettyprint lang-r'>valid.out &lt;- predict(rpart.out, newdata=affairs.valid)
+table(&#39;Prediction&#39;=valid.out &gt; median(valid.out), &#39;Actual&#39;=affairs.valid$HadAffair) %&gt;% 
+    print %&gt;% prop.table %&gt;% diag %&gt;% sum %&gt;% print</pre>
+
+<pre >##           Actual
+## Prediction FALSE TRUE
+##      FALSE   141   28
+##      TRUE     84   48
+## [1] 0.627907</pre>
+
+</article></slide><slide class=''><hgroup><h2>Random Forests</h2></hgroup><article  id="random-forests" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>formu2 &lt;- update(formu, factor(HadAffair) ~ .)
+library(randomForest)
+rf.out &lt;- randomForest(formu2, data=affairs.train)
+valid.out.rf &lt;- predict(rf.out, newdata=affairs.valid)
+table(&#39;Prediction&#39;=valid.out.rf, &#39;Actual&#39;=affairs.valid$HadAffair) %&gt;% 
+    print %&gt;% prop.table %&gt;% diag %&gt;% sum %&gt;% print</pre>
+
+<pre >##           Actual
+## Prediction FALSE TRUE
+##      FALSE   203   62
+##      TRUE     22   14
+## [1] 0.7209302</pre>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Interactive Documents</h2></hgroup><article  id="interactive-documents" class="smaller ">
+
+</article></slide><slide class=''><hgroup><h2>Shiny</h2></hgroup><article  id="shiny" class="smaller ">
+
+<p><a href='http://shiny.rstudio.com' title=''>Shiny</a> is an R package that provides a framework for creating interactive, web based, applications.</p>
+
+<p><a href='http://shiny.rstudio.com/tutorial/' title=''>Tutorial</a> and <a href='https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=2&amp;cad=rja&amp;uact=8&amp;ved=0CCQQFjABahUKEwjIqMeR_OrIAhXIJCYKHfVqBNM&amp;url=https%3A%2F%2Fwww.rstudio.com%2Fwp-content%2Fuploads%2F2015%2F02%2Fshiny-cheatsheet.pdf&amp;usg=AFQjCNFrWYHez7mf1peCXlJqk1s5WAiRxQ&amp;sig2=thnZiMeNdXJl6gUvhkPv-A&amp;bvm=bv.106379543,d.eWE' title=''>CheatSheet</a></p>
+
+</article></slide><slide class=''><hgroup><h2>ui.R</h2></hgroup><article  id="ui.r" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>shinyUI(pageWithSidebar(
+    headerPanel(&quot;Gambler&#39;s Run&quot;), # Application title
+    sidebarPanel(
+        helpText(paste0(&quot;Selection the number of games to play (x axis), &quot;,
+                        &quot;the odds of winning, and the number of runs &quot;,
+                        &quot;(i.e. number of lines).&quot;)),
+        sliderInput(&quot;games&quot;, &quot;Number of games:&quot;, min=2, max=1000, value=100),
+        sliderInput(&quot;odds&quot;, &quot;Odds of winning (1:n):&quot;, min=2, max=12, value=2),
+        sliderInput(&quot;runs&quot;, &quot;Number of runs:&quot;, min=1, max=20, value=1),
+        br(), actionButton(&#39;reload.data&#39;,&#39;Start Over&#39;)
+    ),
+    mainPanel(
+        tabsetPanel(
+            tabPanel(&quot;Plot&quot;, h3(textOutput(&quot;results&quot;)), plotOutput(&quot;plot&quot;)),
+            tabPanel(&quot;Table&quot;, tableOutput(&quot;table&quot;))
+        )
+    )
+))</pre>
+
+</article></slide><slide class=''><hgroup><h2>server.R</h2></hgroup><article  id="server.r" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>shinyServer(function(input, output) {
+    data &lt;- reactive({
+        if(input$reload.data &gt; 0 | TRUE) {
+            data &lt;- data.frame(x=integer(), y=integer(), run=integer())
+            for(i in seq_len(input$runs)) {
+                vals &lt;- sample(input$odds, input$games, replace=TRUE)
+                vals &lt;- ifelse(vals==1, 1, -1)
+                data &lt;- rbind(data, data.frame(x = 1:length(vals), y = cumsum(vals),
+                    run = rep(i, length(vals)) ) )
+            }
+            return(data)
+        }
+    })
+    output$table &lt;- renderTable({ data() })
+    output$plot &lt;- renderPlot({
+        mydata &lt;- data()
+        range &lt;- c( -max(abs(mydata$y)), max(abs(mydata$y)))
+        ggplot(mydata, aes(x=x, y=y, color=run, group=run)) + geom_hline(yintercept=0, colour=&#39;blue&#39;) + 
+            geom_line() + ylim(range) + ylab(&#39;Cumulative Sum&#39;) + xlab(&#39;x&#39;) + theme(legend.position=&#39;none&#39;)
+    }, height=400)
+    output$results &lt;- renderText({
+        mydata &lt;- data()
+        total &lt;- mean(mydata[mydata$x == max(mydata$x),&#39;y&#39;])
+        return(paste0(&#39;Average &#39;, ifelse(total &lt; 0, &#39;losses&#39;, &#39;winnings&#39;), &#39; after &#39;,
+               input$games, &#39; games is &#39;, prettyNum(abs(total), digits=1)))
+    })
+})</pre>
+
+</article></slide><slide class=''><hgroup><h2>UI Inputs</h2></hgroup><article  id="ui-inputs" class="smaller ">
+
+<ul>
+<li><code>actionButton</code> - Action Button</li>
+<li><code>checkboxGroupInput</code> - A group of check boxes</li>
+<li><code>checkboxInput</code> - A single check box</li>
+<li><code>dateInput</code> - A calendar to aid date selection</li>
+<li><code>dateRangeInput</code> - A pair of calendars for selecting a date range</li>
+<li><code>fileInput</code> - A file upload control wizard</li>
+<li><code>helpText</code> - Help text that can be added to an input form</li>
+<li><code>numericInput</code> - A field to enter numbers</li>
+<li><code>radioButtons</code> - A set of radio buttons</li>
+<li><code>selectInput</code> - A box with choices to select from</li>
+<li><code>sliderInput</code> - A slider bar</li>
+<li><code>submitButton</code> - A submit button</li>
+<li><code>textInput</code> - A field to enter text</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Gambler Demo</h2></hgroup><article  id="gambler-demo" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>shiny::runGitHub(&#39;ShinyApps&#39;, &#39;jbryer&#39;, subdir=&#39;gambler&#39;)</pre>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Conclusions</h2></hgroup><article  id="conclusions" class="smaller ">
+
+</article></slide><slide class=''><hgroup><h2>Additional Resources</h2></hgroup><article  id="additional-resources" class="smaller ">
+
+<ul>
+<li><a href='http://r-bloggers.com' title=''>R Bloggers</a></li>
+<li><a href='http://r4ds.had.co.nz/' title=''>R for Data Science</a> - (Grolemund &amp; Wickham, 2016)</li>
+<li><a href='http://www.statmethods.net/' title=''>Quick-R</a> and <a href='https://www.manning.com/books/r-in-action-second-edition?a_bid=5c2b1e1d&amp;a_aid=RiA2ed' title=''>R in Action Book</a></li>
+<li><a href='https://www.nostarch.com/artofr.htm' title=''>The Art of R Programming</a></li>
+<li>Hadley Wickham&#39;s books and <a href='http://had.co.nz/' title=''>websites</a>: <a href='http://r-pkgs.had.co.nz/' title=''>R Packages</a>, <a href='http://adv-r.had.co.nz/' title=''>Advanced R</a>, <a href='http://docs.ggplot2.org/current/' title=''>ggplot2</a></li>
+<li><a href='https://journal.r-project.org/' title=''>The R Journal</a></li>
+<li><a href='http://www.jstatsoft.org/index' title=''>Journal of Statistical Software</a></li>
+<li>RStudio <a href='https://www.rstudio.com/resources/cheatsheets/' title=''>Cheat Sheets</a>, <a href='https://www.rstudio.com/resources/webinars/' title=''>webinars</a>, and <a href='https://www.rstudio.com/resources/training/online-learning/' title=''>online learning</a></li>
+<li><a href='http://openintro.org' title=''>OpenIntro</a> An open sourse introductory statistics textbook that make extensive use of R.</li>
+<li><a href='http://DATA606.net' title=''>DATA606</a> Statistics and Probability course I teach online. Most materials are available on my Github page.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Thank You!</h2></hgroup><article  id="thank-you" class="smaller ">
+
+<ul>
+<li><p>Jason Bryer, Ph.D. <a href='mailto:jbryer@excelsior.edu' title=''>jbryer@excelsior.edu</a>, <a href='http://jason.bryer.org' title=''>www.bryer.org</a></p></li>
+<li><p>Workshop Materials: <a href='https://github.com/jbryer/IntroR' title=''>github.com/jbryer/IntroR</a></p></li>
+</ul></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script src="IntroR_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+<script src="IntroR_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+<script src="IntroR_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+<script src="IntroR_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+<script src="IntroR_files/ioslides-13.5.1/js/hammer.js"></script>
+<script src="IntroR_files/ioslides-13.5.1/js/slide-controller.js"></script>
+<script src="IntroR_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "IntroR_files/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
